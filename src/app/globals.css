@@ -1,0 +1,22 @@
+:root {
+    --main-bg-color: #eef4f5;
+    --grey: #4c4c4c;
+    --blue: #2a37f1;
+    --white: #ffffff;
+    --secondary-bg-color: #ffffff;
+    --black: #000000;
+}
+
+body{
+    background: var(--main-bg-color);
+}
+
+.main{
+    margin:0px 10px 0px 10px;
+    background: #ffffff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.left{
+    width:80px;
+}

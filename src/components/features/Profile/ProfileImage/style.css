@@ -1,0 +1,9 @@
+.circle-cropped {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    overflow: hidden;
+    object-fit: cover;
+}

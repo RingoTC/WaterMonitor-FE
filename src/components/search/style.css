@@ -1,0 +1,8 @@
+.search input{}
+.search .search-icon svg{
+    width: 32px;
+    height: 32px;
+}
+.search .search-content p{
+    margin:0;
+}

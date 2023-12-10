@@ -1,0 +1,40 @@
+.signup-container-fluid {
+    padding: 50px;
+    background-color: #f5fafd;
+}
+
+.signup-container-inside {
+    padding-left: 200px;
+    padding-right: 200px;
+    padding-top: 50px;
+    padding-bottom: 100px;
+    background-color: white;
+}
+
+.signup-title {
+    text-align: center;
+}
+
+.signup-submission-button-submit {
+    background-color: #96aeeb;
+    border: none;
+    align-items: end;
+    margin: 10px;
+}
+
+.signup-submission-button-cancel {
+    background-color: #eb9696;
+    border: none;
+    align-items: end;  
+}
+
+.signup-submission-button-cancel a {
+    color: white;
+    text-decoration: none;
+}
+
+.button-container {
+    text-align: right;
+}
+
+

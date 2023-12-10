@@ -1,0 +1,15 @@
+.user-container {
+    padding: 20px;
+    background-color: #f2f7fb;
+    border-radius: 8px;
+}
+
+.row-format {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.info-icon {
+    font-size: 1.3em;
+}
+
