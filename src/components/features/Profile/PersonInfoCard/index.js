@@ -10,10 +10,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {loginUser} from "@/lib/auth";
 import * as client from "@/app/profile/client";
 
-export default function PersonInfoCard({userData}) {
+export default function PersonInfoCard() {
+    const userData = useSelector(state => state.userData);
+
     return (
         <div>
-            {userData && (
             <div className='container mt-5' style={{lineHeight:'2.6'}}>
             <div className='row justify-content-center'>
                 <div className='bg-light col-12 col-lg-10'>
@@ -45,13 +46,13 @@ export default function PersonInfoCard({userData}) {
                         </div>
                         <div className='col-12 col-md-12 col-lg-5 text-left'>
                             <p>About: {userData?.about}</p>
+
                             <a href={'/profile/editProfile'} className='btn btn-primary mt-3 d-none d-md-block' style={{ width: '200px' }}>Update Profile</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        )}
         </div>
 
     );

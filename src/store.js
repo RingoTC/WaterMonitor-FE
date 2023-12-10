@@ -7,16 +7,19 @@ import cityReducer from "@/lib/cityReducer";
 import provinceReducer from "@/lib/provinceReducer";
 import {composeWithDevTools} from "redux-devtools-extension";
 import sectionReducer from "@/lib/sectionReducer";
+import userDataReducer from "@/lib/userDataReducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
     maps: mapsReducer,
     records: recordsReducer,
+    userData: userDataReducer,
     data: combineReducers({
         city: cityReducer,
         province: provinceReducer,
         sectionData: sectionReducer,
     })
+
 })
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
