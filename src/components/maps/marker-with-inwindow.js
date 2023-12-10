@@ -12,7 +12,7 @@ import Link from "next/link";
 import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from 'react-bootstrap/Spinner';
-import {Button, InputGroup, Form} from "react-bootstrap";
+import {Button, InputGroup, Form, Table} from "react-bootstrap";
 import {fetchMaps, updateFetchMaps} from "@/lib/maps";
 
 const API_BASE = process.env.REACT_APP_BACKEND || "http://localhost:9000";
@@ -23,10 +23,10 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
     const current = useSelector(state => state.records.records.find(record => record.MonitoringLocationIdentifier === monitorID));
     const [introduction, setIntroduction] = useState("We are asking openai for more information...");
     const [loading, setLoading] = useState(false);
-    const [editablePH, setEditablePH] = useState(current ? current.pH_Value : 'Login to view');
-    const [editableDO, setEditableDO] = useState(current ? current.DO_Value : 'Login to view');
-    const [editableNH4N, setEditableNH4N] = useState(current ? current.NH4N_Value : 'Login to view');
-    const [editableCOD, setEditableCOD] = useState(current ? current.COD_Value : 'Login to view');
+    const [editablePH, setEditablePH] = useState(current ? current.pH_Value : '');
+    const [editableDO, setEditableDO] = useState(current ? current.DO_Value : '');
+    const [editableNH4N, setEditableNH4N] = useState(current ? current.NH4N_Value : '');
+    const [editableCOD, setEditableCOD] = useState(current ? current.COD_Value : '');
     const [infoID, setInfoID] = useState(current ? current._id : '0');
 
 
@@ -52,25 +52,6 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
         setLoading(true);
         return data.data;
     }
-
-    const handleEdit = async () => {
-        try {
-            console.log('Editable pH in handleEdit:', editablePH);
-            const response = await axios.put(`${API_BASE}/record/updateLatest/${monitorID}`, {
-                _id: infoID,
-                pH: editablePH,   // 使用状态中的新值
-                DO: editableDO,   // 使用状态中的新值
-                NH4N: editableNH4N, // 使用状态中的新值
-                COD: editableCOD,   // 使用状态中的新值
-            });
-            dispatch(fetchRecords());
-            alert('Record updated successfully:',JSON.stringify( response.data));
-        } catch (error) {
-            alert('Error updating record:', JSON.stringify(error.message));
-        }
-    };
-
-
 
     const handleDelete = async () => {
         try {
@@ -112,64 +93,33 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
             {infowindowOpen && (
                 <InfoWindow
                     anchor={marker}
-                    maxWidth={400}
                     onCloseClick={() => {
                         setInfowindowOpen(false)
                     }}>
-                    <div className="text-start">
+                    <div className="text-start" style={{"width":"300px"}}>
                         <p>{Description}</p>
                         {current ? (
-                            <ListGroup style={{ margin: '10px', lineHeight: '16px', fontSize: '16px' }}>
-                                <ListGroup.Item>
-                                    <InputGroup size="sm" className="mb-3">
-                                        <InputGroup.Text id="pH-addon">pH:</InputGroup.Text>
-                                        <Form.Control
-                                            aria-label="pH"
-                                            aria-describedby="pH-addon"
-                                            type="text"
-                                            value={editablePH}
-                                            onChange={(e) => setEditablePH(e.target.value)}
-                                        />
-                                    </InputGroup>
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <InputGroup size="sm" className="mb-3">
-                                        <InputGroup.Text id="DO-addon">DO:</InputGroup.Text>
-                                        <Form.Control
-                                            aria-label="DO"
-                                            aria-describedby="DO-addon"
-                                            type="text"
-                                            value={editableDO}
-                                            onChange={(e) => setEditableDO(e.target.value)}
-                                        />
-                                    </InputGroup>
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <InputGroup size="sm" className="mb-3">
-                                        <InputGroup.Text id="NH4N-addon">NH4N:</InputGroup.Text>
-                                        <Form.Control
-                                            aria-label="NH4N"
-                                            aria-describedby="NH4N-addon"
-                                            type="text"
-                                            value={editableNH4N}
-                                            onChange={(e) => setEditableNH4N(e.target.value)}
-                                        />
-                                    </InputGroup>
-                                </ListGroup.Item>
-                                <ListGroup.Item>
-                                    <InputGroup size="sm" className="mb-3">
-                                        <InputGroup.Text id="COD-addon">COD:</InputGroup.Text>
-                                        <Form.Control
-                                            aria-label="COD"
-                                            aria-describedby="COD-addon"
-                                            type="text"
-                                            value={editableCOD}
-                                            onChange={(e) => setEditableCOD(e.target.value)}
-                                        />
-                                    </InputGroup>
-                                </ListGroup.Item>
+                            <Table striped bordered hover style={{ lineHeight: '16px', fontSize: '14px' }}>
+                                <tbody>
+                                <tr>
+                                    <td><strong>pH:</strong></td>
+                                    <td>{current.pH_Value}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DO:</strong></td>
+                                    <td>{current.DO_Value}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NH4N:</strong></td>
+                                    <td>{current.NH4N_Value}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>COD:</strong></td>
+                                    <td>{current.COD_Value}</td>
+                                </tr>
                                 {/* ... (other properties) */}
-                            </ListGroup>
+                                </tbody>
+                            </Table>
                         ) : (
                             <Spinner animation="border" role="status">
                                 <span className="sr-only">Loading...</span>
@@ -184,9 +134,10 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                                 <p>{introduction}</p>
                             </Alert>
                         )}
-                        <Button variant="primary"><Link href={`/tickets`} style={{"color":"#fff","textDecoration":"none"}}>Submit a Ticket</Link></Button>
-                        {user && (user.role === 'ADMIN'|| user.role === 'MANAGER') && <Button variant="success" onClick={handleEdit}>Edit</Button>}
-                        {user && user.role === 'ADMIN' && <Button variant="danger" onClick={handleDelete}>Delete</Button>}
+                        <div className="action">
+                            <Button variant="primary"><Link href={`/tickets`} style={{"color":"#fff","textDecoration":"none"}}>Submit a Ticket</Link></Button>
+                            {user && user.role === 'ADMIN' && <Button variant="danger" onClick={handleDelete}>Delete</Button>}
+                        </div>
                     </div>
 
                 </InfoWindow>

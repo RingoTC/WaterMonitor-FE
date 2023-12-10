@@ -243,7 +243,7 @@ export default function Details() {
                 </div>
             )}
             {!user && (
-                <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                <Container style={{ height: '80vh' }}>
                     <Alert variant="danger" className="text-center">
                         <Alert.Heading>Access Denied</Alert.Heading>
                         <p>You must be logged in to access this page.</p>

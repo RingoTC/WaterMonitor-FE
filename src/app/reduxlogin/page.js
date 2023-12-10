@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "@/lib/auth";
 import "./login.css"
+import { useRouter } from "next/navigation";
 
 const ReduxLogin = () => {
     const [username, setUsername] = useState("");
@@ -10,21 +11,30 @@ const ReduxLogin = () => {
     const dispatch = useDispatch();
     const errorMessage = useSelector(state => state.auth.errorMessage);
     const user = useSelector(state => state.auth.user);
+    const router = useRouter();
 
     const handleSubmit = (event) => {
         event.preventDefault();
         dispatch(loginUser(username, password));
     };
+
+    useEffect(() => {
+        // Check if user is authenticated
+        if (user) {
+            // Redirect to the profile page
+            router.push('/profile');
+        }
+    }, [user]);
  
     return (
         <div className="home p-0">
             
                     {user ? (
                         <div>
-                            <p>Hello! {user.username}</p>
+
                         </div>
                     ) : (
-                        <div className="container-fluid">
+                        <div className="container-fluid login-container-fluid">
                             <div className="row">
                                 <div className="col-md-6 ">
                                     <img src="images/login.png" className="left-half" alt="..."/>
