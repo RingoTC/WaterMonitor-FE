@@ -1,4 +1,8 @@
 .selected-section  td{
     background: #2a37f1;
-    color: #fff;
+    color: #fff!important;
+}
+
+.selected-section td svg{
+    fill: #fff!important;
 }

@@ -4,6 +4,7 @@ import {
     InfoWindow, Pin,
     useAdvancedMarkerRef
 } from '@vis.gl/react-google-maps';
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchRecords} from "@/lib/record";
 import "./maps.css";
@@ -11,6 +12,8 @@ import Link from "next/link";
 import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from 'react-bootstrap/Spinner';
+import {Button, InputGroup, Form} from "react-bootstrap";
+import {fetchMaps, updateFetchMaps} from "@/lib/maps";
 
 const API_BASE = process.env.REACT_APP_BACKEND || "http://localhost:9000";
 const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
@@ -20,9 +23,18 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
     const current = useSelector(state => state.records.records.find(record => record.MonitoringLocationIdentifier === monitorID));
     const [introduction, setIntroduction] = useState("We are asking openai for more information...");
     const [loading, setLoading] = useState(false);
+    const [editablePH, setEditablePH] = useState(current ? current.pH_Value : 'Login to view');
+    const [editableDO, setEditableDO] = useState(current ? current.DO_Value : 'Login to view');
+    const [editableNH4N, setEditableNH4N] = useState(current ? current.NH4N_Value : 'Login to view');
+    const [editableCOD, setEditableCOD] = useState(current ? current.COD_Value : 'Login to view');
+    const [infoID, setInfoID] = useState(current ? current._id : '0');
+
+
     useEffect(() => {
         dispatch(fetchRecords());
     },[dispatch])
+
+    const user = useSelector(state => state.auth.user);
 
     const changeBGColor = (pH) => {
         if(pH >= 6.5 && pH <= 7.5){
@@ -40,6 +52,43 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
         setLoading(true);
         return data.data;
     }
+
+    const handleEdit = async () => {
+        try {
+            console.log('Editable pH in handleEdit:', editablePH);
+            const response = await axios.put(`${API_BASE}/record/updateLatest/${monitorID}`, {
+                _id: infoID,
+                pH: editablePH,   // 使用状态中的新值
+                DO: editableDO,   // 使用状态中的新值
+                NH4N: editableNH4N, // 使用状态中的新值
+                COD: editableCOD,   // 使用状态中的新值
+            });
+            dispatch(fetchRecords());
+            alert('Record updated successfully:',JSON.stringify( response.data));
+        } catch (error) {
+            alert('Error updating record:', JSON.stringify(error.message));
+        }
+    };
+
+
+
+    const handleDelete = async () => {
+        try {
+            const response = await axios.delete(`${API_BASE}/site/delete`, {
+                data: { MonitoringLocationIdentifier: monitorID },
+            });
+
+            // 重新获取最新的站点数据
+            dispatch(updateFetchMaps());
+
+            // 关闭当前弹窗
+            setInfowindowOpen(false);
+
+            console.log('Site deleted successfully:', response.data);
+        } catch (error) {
+            alert('Error deleting site:', error.message);
+        }
+    };
 
     return (
         <>
@@ -70,22 +119,56 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                     <div className="text-start">
                         <p>{Description}</p>
                         {current ? (
-                            <ListGroup style={{ margin: '10px' , lineHeight:'16px', fontSize:'16px'}}>
+                            <ListGroup style={{ margin: '10px', lineHeight: '16px', fontSize: '16px' }}>
                                 <ListGroup.Item>
-                                    pH: {current.pH_Value}
+                                    <InputGroup size="sm" className="mb-3">
+                                        <InputGroup.Text id="pH-addon">pH:</InputGroup.Text>
+                                        <Form.Control
+                                            aria-label="pH"
+                                            aria-describedby="pH-addon"
+                                            type="text"
+                                            value={editablePH}
+                                            onChange={(e) => setEditablePH(e.target.value)}
+                                        />
+                                    </InputGroup>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                    DO: {current.DO_Value}
+                                    <InputGroup size="sm" className="mb-3">
+                                        <InputGroup.Text id="DO-addon">DO:</InputGroup.Text>
+                                        <Form.Control
+                                            aria-label="DO"
+                                            aria-describedby="DO-addon"
+                                            type="text"
+                                            value={editableDO}
+                                            onChange={(e) => setEditableDO(e.target.value)}
+                                        />
+                                    </InputGroup>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                    NH4N: {current.NH4N_Value}
+                                    <InputGroup size="sm" className="mb-3">
+                                        <InputGroup.Text id="NH4N-addon">NH4N:</InputGroup.Text>
+                                        <Form.Control
+                                            aria-label="NH4N"
+                                            aria-describedby="NH4N-addon"
+                                            type="text"
+                                            value={editableNH4N}
+                                            onChange={(e) => setEditableNH4N(e.target.value)}
+                                        />
+                                    </InputGroup>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                    COD: {current.COD_Value}
+                                    <InputGroup size="sm" className="mb-3">
+                                        <InputGroup.Text id="COD-addon">COD:</InputGroup.Text>
+                                        <Form.Control
+                                            aria-label="COD"
+                                            aria-describedby="COD-addon"
+                                            type="text"
+                                            value={editableCOD}
+                                            onChange={(e) => setEditableCOD(e.target.value)}
+                                        />
+                                    </InputGroup>
                                 </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Update Date: {current.EstimatedDate}
-                                </ListGroup.Item>
+                                {/* ... (other properties) */}
                             </ListGroup>
                         ) : (
                             <Spinner animation="border" role="status">
@@ -101,7 +184,9 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                                 <p>{introduction}</p>
                             </Alert>
                         )}
-                        <Link href={`/tickets`}>Submit a Ticket</Link>
+                        <Button variant="primary"><Link href={`/tickets`} style={{"color":"#fff","textDecoration":"none"}}>Submit a Ticket</Link></Button>
+                        {user && (user.role === 'ADMIN'|| user.role === 'MANAGER') && <Button variant="success" onClick={handleEdit}>Edit</Button>}
+                        {user && user.role === 'ADMIN' && <Button variant="danger" onClick={handleDelete}>Delete</Button>}
                     </div>
 
                 </InfoWindow>

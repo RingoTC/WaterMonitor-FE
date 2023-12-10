@@ -14,7 +14,7 @@ const menu = [{
 }, {
     "name": "Profile", "path": "/profile", "icon": HiUserCircle
 }, {
-    "name": "reduxLogin", "path": "/reduxlogin", "icon": HiOutlineLogin
+    "name": "login", "path": "/reduxlogin", "icon": HiOutlineLogin
 }
 ]
 

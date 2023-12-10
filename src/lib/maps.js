@@ -44,21 +44,34 @@ export default function maps(state = {
     }
 }
 
-export const fetchMaps = () => async (dispatch,getState) => {
+export const fetchMaps = () => async (dispatch, getState) => {
     const maps = getState().maps;
-    if(maps.maps.length > 0){
+    if (maps.maps.length > 0) {
         return maps.maps;
-    }else{
+    } else {
         dispatch(requestMaps());
         try {
             const response = await axios.get(`${API_BASE}/site/all`);
-            dispatch(receiveMaps(response.data));
-            return response.data;
+            await dispatch(receiveMaps(response.data)); // 等待状态更新完成
+            return getState().maps.maps; // 获取最新状态
         } catch (error) {
             dispatch(mapsError(error.response.data.message));
             throw error;
         }
     }
 };
+
+
+export const updateFetchMaps = () => async (dispatch, getState) => {
+    dispatch(requestMaps());
+    try {
+        const response = await axios.get(`${API_BASE}/site/all`);
+        await dispatch(receiveMaps(response.data)); // 等待状态更新完成
+        return getState().maps.maps; // 获取最新状态
+    } catch (error) {
+        dispatch(mapsError(error.response.data.message));
+        throw error;
+    }
+}
 
 

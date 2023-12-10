@@ -27,7 +27,7 @@ export default function RootLayout({
                         <Logo/>
                     </Row>
                     <Row>
-                        <Col xs={1} className="left">
+                        <Col xs={{ span: 1, offset: 0 }} style={{ width: '80px' }} className="text-center left">
                             <Sidebar></Sidebar>
                         </Col>
                         <Col className="main p-0">
