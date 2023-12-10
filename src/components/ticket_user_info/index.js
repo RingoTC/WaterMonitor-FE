@@ -6,7 +6,10 @@ import { FiLoader } from 'react-icons/fi';
 import { TiTickOutline } from 'react-icons/ti';
 import { GiEarthAmerica } from 'react-icons/gi';
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import * as client from "./client";
+import { logoutUser } from "@/lib/auth";
 
 export default function UserInfo() {
     const currentDate = new Date().toISOString().split('T')[0]; 
@@ -14,6 +17,24 @@ export default function UserInfo() {
     const [totalComplete, setTotalComplete] = useState(0);
     const [totalLoading, setTotalLoading] = useState(0);
     const [userLocation, setuserLocation] = useState('Fetching userLocation...');
+    const [isEditable, setIsEditable] = useState(false);
+    const [reminder, setReminder] = useState("");
+    const user = useSelector(state => state.auth.user);
+    const dispatch = useDispatch();
+    const router = useRouter();
+    
+
+    const handleUpdate = () => {
+        setIsEditable(true); 
+    };
+
+    const handleSave = () => {
+        setIsEditable(false);
+    };
+
+    const handleChange = (e) => {
+        setReminder(e.target.value); 
+    };
 
     const fetchTotalTicketCount = async () => {
         const totalTickets = await client.findTotalTickets();
@@ -60,6 +81,17 @@ export default function UserInfo() {
                 break;
         }
     }
+  
+
+    const handleLogout = () => {
+        dispatch(logoutUser())
+            .then(() => {
+                router.push('/reduxlogin');
+            })
+            .catch(error => {
+                console.error('Logout failed:', error);
+            });
+    };
 
     useEffect(() => {
         fetchTotalTicketCount();
@@ -68,9 +100,13 @@ export default function UserInfo() {
         getuserLocation();
     }, []);
 
+  
     return (
         <div className="user-container">
-            <h5>Welcome! XXX</h5>
+            {user && (
+                <h5>Welcome, {user.firstName} {user.lastName} ({user.role})</h5>
+            )}
+            <button onClick={handleLogout} className="btn btn-danger buttom-align mb-3">Sign Out</button>
             <hr/>
             
 
@@ -100,11 +136,27 @@ export default function UserInfo() {
                     
                 </div>
 
+                <div className="row row-format ">
+                    <div className="col">
+                        <div className="mb-3">
+                            <label htmlFor="reminder" className="form-label">Reminder:</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                id="reminder" 
+                                value={reminder}
+                                onChange={handleChange}
+                                disabled={!isEditable} 
+                            />
+                        </div>
+                    </div>
+                </div>
+
                 <hr/>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-primary me-md-2 tickets-button" type="button">Setting</button>
-                    <button class="btn btn-primary tickets-button" type="button">Button</button>
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button className="btn btn-primary me-md-2 tickets-button" type="button" onClick={handleUpdate}>Update</button>
+                    <button className="btn btn-success tickets-button" type="button" onClick={handleSave}>Save</button>
                 </div>
             </div>
         </div>

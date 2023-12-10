@@ -6,9 +6,13 @@ import { GiTicket } from 'react-icons/gi';
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import * as client from "./client";
-import { BsPencil, BsTrash3Fill, BsPlusCircleFill, BsFillCheckCircleFill } from "react-icons/bs";
-
+import { useRouter } from 'next/navigation';
+import { BsTrash3Fill} from "react-icons/bs";
+import {useSelector} from "react-redux";
+ 
 export default function Tickets() {
+    const router = useRouter();
+    const user = useSelector(state => state.auth.user);
     const [tickets, setTickets] = useState([]);
     const [ticket, setTicket] = useState({ 
         MonitoringLocationIdentifier:"", MonitoringYear:"", MonitoringWeek:"", 
@@ -20,7 +24,6 @@ export default function Tickets() {
     const [inputUserPage, setInputUserPage] = useState('');
     const ticketsPerPage = 6;
     const pageCount = Math.ceil(tickets.length / ticketsPerPage);
-
     const [currentUserPage, setCurrentUserPage] = useState(1);
     const usersPerPage = 3; 
     const userPageCount = Math.ceil(users.length / usersPerPage);
@@ -160,6 +163,18 @@ export default function Tickets() {
         }
     };
 
+    const handleAddTicket = async () => {
+      try {
+          const newTicket = await client.createTicket(ticket);
+          if (newTicket && newTicket._id) {
+              router.push(`/tickets/ticketDetail?_id=${newTicket._id}`);
+              setTickets([newTicket, ...tickets]);
+          }
+      } catch (error) {
+          console.error("Error creating ticket:", error);
+      }
+  };
+
     const deleteTicket = async (ticketToDelete) => {
         try {
             await client.deleteTicket(ticketToDelete._id);
@@ -170,13 +185,49 @@ export default function Tickets() {
         }
     };
 
-    useEffect(() => { 
-        fetchTickets(),
-        fetchUsers(); 
-    }, []);
+    // useEffect(() => { 
+    //     fetchTickets(),
+    //     fetchUsers(); 
+    // }, []);
+
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //         await fetchTickets();
+  //         await fetchUsers();
+  //     };
+  
+  //     fetchData();
+  // }, [router.asPath]); 
+  const loadTickets = async () => {
+    try {
+        const fetchedTickets = await client.findAllTickets();
+        setTickets(fetchedTickets);
+    } catch (error) {
+        console.error("Error loading tickets:", error);
+    }
+  };
+
+  const loadUsers = async () => {
+    try {
+        const fetchedUsers = await client.findAllUsers();
+        setUsers(fetchedUsers); 
+    } catch (error) {
+        console.error("Error loading users:", error);
+    }
+};
+
+  useEffect(() => {
+    if (!user) {
+        router.push('/reduxlogin'); 
+    } else {
+        loadTickets();
+        loadUsers();
+    }
+}, [user, router]);
 
     return(
         <div className="home p-0">
+          {user && (
             <div className="container">
                 <div className="row">
 
@@ -188,12 +239,10 @@ export default function Tickets() {
                                     <li className="breadcrumb-item active" aria-current="page">Home</li>
                                 </ol>
                             </nav>
-                            {/* <Link href="/tickets/ticketDetail">
-                                <button class="btn btn-primary btn-sm" type="button">
-                                    + <GiTicket/> New Ticket !
-                                </button>
-                            </Link> */}
-                            <button className="btn btn-primary btn-sm" onClick={createTicket} type="button">+ <GiTicket/>  New Ticket ! </button>
+                            <button className="btn btn-primary btn-sm" type="button" onClick={handleAddTicket}>
+                                + <GiTicket/> New Ticket !
+                            </button>
+                            {/* <button className="btn btn-primary btn-sm" onClick={createTicket} type="button">+ <GiTicket/>  New Ticket ! </button> */}
                         </div>
                         <hr />
                     </div>
@@ -256,29 +305,39 @@ export default function Tickets() {
                                 </div>
                             </form>
                         </nav>
-                        
-                            {currentTickets.map((ticket,index) => (
-                                <Link key={index} href="/tickets/ticketDetail" className="list-group-item list-group-item-action">
-                                <div className="d-flex w-100 justify-content-between">
-                                    <h6 className="mb-1">
-                                        Location: {ticket.name}
-                                        </h6>
-                                        <small className="text-body-secondary">
-                                            {ticket._id} <br/>
-                                            <button className="btn btn-danger float-end buttom-align" onClick={() => deleteTicket(ticket)}>
-                                                <BsTrash3Fill /> 
-                                            </button>
-                                        </small>
-                                    </div>  
-                                    <small className="text-body-secondary">{ticket.EstimatedDate}</small>
-                                    </Link>
-                            ))}
-                        <br/>
+
+                        {currentTickets.map((ticket, index) => (
+                          <Link key={index} href={`/tickets/ticketDetail?_id=${ticket._id}`} className="list-group-item list-group-item-action">
+                              <div className="d-flex w-100 justify-content-between">
+                                  <h6 className="mb-1">
+                                  Location: {ticket.name || ticket.MonitoringLocationDescriptionText}
+                                  </h6>
+                                  <small className="text-body-secondary">
+                                      {ticket._id} <br/>
+                                      <button 
+                                          className="btn btn-danger me-2 float-end buttom-align" 
+                                          onClick={(e) => {
+                                              e.preventDefault(); 
+                                              e.stopPropagation(); 
+                                              deleteTicket(ticket);
+                                          }}>
+                                          <BsTrash3Fill />
+                                      </button>
+                                      <button 
+                                          className={`btn float-end me-2 buttom-align ${ticket.status === 'complete' ? 'btn-success' : 'btn-warning'}`}>
+                                          {ticket.status === 'complete' ? 'Complete' : 'Loading'}
+                                      </button>
+                                  </small>
+                              </div>  
+                              <small className="text-body-secondary">{ticket.EstimatedDate}</small>
+                          </Link>
+                      ))}
+                      <br/>
                         {/* <TicketList/> */}
                     </div>
 
                 </div>
-            </div>
+            </div>)}
         </div>
     );
 
