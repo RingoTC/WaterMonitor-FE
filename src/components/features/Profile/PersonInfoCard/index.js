@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {loginUser} from "@/lib/auth";
 import * as client from "@/app/profile/client";
+import Link from "next/link";
 
 export default function PersonInfoCard() {
     const userData = useSelector(state => state.userData);
@@ -47,7 +48,7 @@ export default function PersonInfoCard() {
                         <div className='col-12 col-md-12 col-lg-5 text-left'>
                             <p>About: {userData?.about}</p>
 
-                            <a href={'/profile/editProfile'} className='btn btn-primary mt-3 d-none d-md-block' style={{ width: '200px' }}>Update Profile</a>
+                            <Link href={'/profile/editProfile'} className='btn btn-primary mt-3 d-none d-md-block' style={{ width: '200px' }}>Update Profile</Link>
                         </div>
                     </div>
                 </div>
