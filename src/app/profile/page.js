@@ -6,7 +6,10 @@ import PersonInfoCard from "@/components/features/Profile/PersonInfoCard";
 import * as client from "@/app/profile/client";
 import {useDispatch, useSelector} from "react-redux";
 import {setUserData} from "@/lib/userDataReducer";
+import { useRouter } from 'next/navigation';
+
 export default function Profile() {
+    const router = useRouter();
     // Add a path parameter into this page
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
@@ -27,7 +30,11 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        fetchUser();
+        if (!user) {
+            router.push('/login');
+        }else{
+            fetchUser();
+        }
     }, [dispatch])
 
     return (

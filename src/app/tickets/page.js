@@ -218,7 +218,7 @@ export default function Tickets() {
 
   useEffect(() => {
     if (!user) {
-        router.push('/reduxlogin'); 
+        router.push('/login');
     } else {
         loadTickets();
         loadUsers();

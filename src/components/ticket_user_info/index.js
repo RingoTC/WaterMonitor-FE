@@ -86,7 +86,7 @@ export default function UserInfo() {
     const handleLogout = () => {
         dispatch(logoutUser())
             .then(() => {
-                router.push('/reduxlogin');
+                router.push('/login');
             })
             .catch(error => {
                 console.error('Logout failed:', error);

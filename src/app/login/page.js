@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "@/lib/auth";
+import { loginUser, logoutUser } from "@/lib/auth";
 import { useRouter } from 'next/navigation';
 import "./login.css"
-import { useRouter } from "next/navigation";
 
 const ReduxLogin = () => {
     const [username, setUsername] = useState("");
@@ -15,18 +14,12 @@ const ReduxLogin = () => {
     const router = useRouter();
 
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const router = useRouter();
 
     // const handleSubmit = (event) => {
     //     event.preventDefault();
     //     dispatch(loginUser(username, password));
     // };
-    
-    useEffect(() => {
-        if (user) {
-            router.push('/tickets'); 
-        }
-    }, [user, router]);
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -37,7 +30,7 @@ const ReduxLogin = () => {
         // Check if user is authenticated
         if (user) {
             // Redirect to the profile page
-            router.push('/profile');
+            router.push('/home');
         }
     }, [user]);
  

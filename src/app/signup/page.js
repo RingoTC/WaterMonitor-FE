@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "@/lib/auth";
 import { useRouter } from 'next/navigation';
 import * as client from "./client";
+import Link from "next/link";
 
 export default function SingUp() {
     const router = useRouter();
@@ -20,7 +21,7 @@ export default function SingUp() {
         try {
             const newUser = await client.signup(user);
             setUsers([newUser, ...users]);
-            router.push(`/profile?username=${user.username}`);
+            router.push(`/home`);
         } catch (err) {
             setError(err.response.data.message);
         }
@@ -180,7 +181,7 @@ export default function SingUp() {
                         
                         <div class="col-12 button-container">
                             <button class="btn btn-primary signup-submission-button-submit" type="submit" onClick={signup}>Submit form</button>
-                            <button class="btn btn-danger signup-submission-button-cancel" type="cancel"><a href="/reduxlogin">Cancel</a></button>
+                            <button class="btn btn-danger signup-submission-button-cancel" type="cancel"><Link href="/login">Cancel</Link></button>
                         </div>
 
                         
