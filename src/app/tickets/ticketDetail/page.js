@@ -1,73 +1,205 @@
 "use client";
-import {GiTicket} from "react-icons/gi";
 import TicketDetails from '../../../components/ticket_details';
-import "../tickets.css"
-import { useState } from "react";
-// import { useRouter } from 'next/router';
+import "../tickets.css";
+import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import * as client from "../client";
 
+
 export default function Tickets() {
-    const ticket = {
-        MonitoringLocationIdentifier: '394',
-        LongitudeMeasure: '121.3',
-        LatitudeMeasure: '40.27',
-        MonitoringDate: '1/8/2017',
-        IndicatorsName: 'pH',
-        Value: '8.18',
-        Unit: 'N/A'
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const ticketId = searchParams.get('_id')
+    
+    const [ticket, setTicket] = useState({
+        MonitoringLocationIdentifier:"" , 
+        LongitudeMeasure:"" , 
+        LatitudeMeasure:"", 
+        MonitoringYear:"" , 
+        MonitoringWeek: "", 
+        MonitoringLocationDescriptionText: "",
+        IndicatorsName:"",
+        Value: null,
+        Unit: "",
+        status: "loading",
+        COD: null,
+        DO_Value: null,
+        NH4N_Value: null,
+        pH_Value:null
+
+    });
+
+    const deleteTicket = async (ticketToDeleteId) => {
+        try {
+            await client.deleteTicket(ticketToDeleteId);
+            router.push('/tickets');
+        } catch (err) {
+            console.log(err);
+        }
     };
 
-    // const router = useRouter();// useNavigate instead of useHistory
-    // const [ticketData, setTicketData] = useState({
-    //     // Initialize your ticket data structure here
-    //     // Example:
-    //     MonitoringLocationIdentifier: '',
-    //     MonitoringYear: '',
-    //     MonitoringWeek: '',
-    //     MonitoringLocationDescriptionText: '',
-    //     EstimatedDate: '',
-    //     IndicatorsName: '',
-    //     status: ''
-    // });
+    const handleInputChange = (e) => {
+        const { id, value } = e.target;
+        setTicket({ ...ticket, [id]: value });
+    };
+    const [site, setSite] = useState({
+        MonitoringLocationIdentifier:null,
+        LongitudeMeasure:null,
+        LatitudeMeasure:null,
+        MonitoringLocationDescriptionText:""
+    });
+    const [sites, setSites] = useState([]);
+    const updateTicketHandler = async () => {
+        try {
+            await client.updateTicket(ticketId, ticket);
+            router.push('/tickets');
+        } catch (error) {
+            console.error('Error updating ticket:', error);
+        }
+    };
+    const handleStatusChange = (e) => {
+        setTicket({ ...ticket, status: e.target.checked ? "complete" : "loading" });
+    };
+    const handleChange = (e) => {
+        const selectedSiteIdentifier =  Number(e.target.value);
+        setTicket({ ...ticket, MonitoringLocationIdentifier: selectedSiteIdentifier });
+        const selectedSite = sites.find(site => site.MonitoringLocationIdentifier === selectedSiteIdentifier);
+        if (selectedSite) {
+            setSite(selectedSite);
+            setTicket({ 
+                ...ticket, 
+                MonitoringLocationDescriptionText:selectedSite.MonitoringLocationDescriptionText,
+                MonitoringLocationIdentifier: selectedSite.MonitoringLocationIdentifier,
+                LongitudeMeasure: selectedSite.LongitudeMeasure,
+                LatitudeMeasure: selectedSite.LatitudeMeasure,
+            });
+        }
+    };
 
-    // // ... rest of your component
+    useEffect(() => {
+        const fetchTicketDetails = async () => {
+            try {
+                const fetchedTicket = await client.getTicketById(ticketId);
+                setTicket(fetchedTicket); 
+            } catch (error) {
+                console.error('Error fetching ticket:', error);
+            }
+        };
 
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     try {
-    //         // Logic to create a ticket
-    //         const newTicket = await client.createTicket(ticketData);
-    //         // After successful creation, navigate back to Ticket Page
-    //         router('/tickets'); // Use navigate instead of history.push
-    //     } catch (error) {
-    //         console.error("Error creating ticket:", error);
-    //         // Handle errors here
-    //     }
-    // };
+        const fetchSites = async () => {
+            const siteData = await client.findAllSites();
+            setSites(siteData);
+        };
+
+        fetchTicketDetails();
+        fetchSites();
+    }, []);
 
     return(
         <div className="home p-0">
             <div className="container mb-5">
                 <div className="row">
 
-                    {/* <div className="col-12 tickets-top-nav">
+                    <div className="col-12 tickets-top-nav">
                         <div className="col-12 d-flex justify-content-between">
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><a href="#">Ticket</a></li>
-                                    <li className="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li className="breadcrumb-item active" aria-current="page">123456789</li>
+                                    <li className="breadcrumb-item"><a href="/tickets">Ticket</a></li>
+                                    <li className="breadcrumb-item"><a href="/tickets">Home</a></li>
+                                    <li className="breadcrumb-item active" aria-current="page">{searchParams}</li>
                                 </ol>
                             </nav>
                         </div>
                         <hr />
-                    </div> */}
+                    </div>
 
                     <div className="col-12 bg-light ">
+                        {/* <TicketDetails ticket={ticket} /> */}
+                        <div className="container mt-4 mb-5">
+                            <h2>Ticket Details</h2>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h4>Monitoring Site Information:</h4>
 
-                        <TicketDetails ticket={ticket} />
+                                    <div className="mb-3">
+                                        <div className="form-floating">
+                                            <select value={ticket.MonitoringLocationIdentifier} 
+                                                    onChange={handleChange} 
+                                                    className="form-select" id="floatingSelect" 
+                                                    aria-label="Floating label select example"
+                                            >
+                                                <option value="">Select Site</option>
+                                                {sites.map((site, index) => (
+                                                    <option key={index} value={site.MonitoringLocationIdentifier}>{site.MonitoringLocationDescriptionText}</option>
+                                                ))}
+                                            </select>
+                                            <label htmlFor="floatingSelect">Site Name</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="longitude" className="form-label">Longitude:</label>
+                                        <input type="number" className="form-control" id="longitude" value={ticket.LongitudeMeasure} disabled></input>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="latitude" className="form-label">Latitude:</label>
+                                        <input type="number" className="form-control" id="latitude" value={ticket.LatitudeMeasure} disabled></input>
+                                    </div>
+
+                                    <h4>Indicators</h4>
+                                    <div className="mb-3">
+                                        <label htmlFor="cod" className="form-label">COD Value:</label>
+                                        <input type="number" className="form-control" id="COD" value={ticket.COD} onChange={handleInputChange}></input>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="do" className="form-label">DO Value:</label>
+                                        <input type="number" className="form-control" id="DO_Value" value={ticket.DO_Value} onChange={handleInputChange}></input>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="nh4n" className="form-label">NH4N Value:</label>
+                                        <input type="number" className="form-control" id="NH4N_Value" value={ticket.NH4N_Value} onChange={handleInputChange}></input>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="ph" className="form-label">pH Value:</label>
+                                        <input type="number" className="form-control" id="pH_Value" value={ticket.pH_Value} onChange={handleInputChange}></input>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="indicatorName" className="form-label">Indicator Name:</label>
+                                        <input type="email" className="form-control" id="indicatorName" value={ticket.IndicatorsName} onChange={handleInputChange}></input>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="indicatorValue" className="form-label">Indicator Value:</label>
+                                        <input type="number" className="form-control" id="indicatorValue" value={ticket.value} onChange={handleInputChange}></input>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="indicatorUnit" className="form-label">Indicator Unit:</label>
+                                        <input type="email" className="form-control" id="indicatorUnit" value={ticket.Unit} onChange={handleInputChange}></input>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <div className="form-check">
+                                            <input type="checkbox" className="form-check-input" id="statusCheckbox" onChange={handleStatusChange} checked={ticket.status === 'complete'} />
+                                            <label className="form-check-label" htmlFor="statusCheckbox">Status is: {ticket.status}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 d-md-block">                                    
+                                    <button className="btn btn-success float-end mb-3 me-2 buttom-align" 
+                                            type="button" 
+                                            onClick={() => updateTicketHandler()}>
+                                        Update Ticket
+                                    </button>
+                                    <button className="btn btn-danger float-end mb-3 me-2 buttom-align" type="button" onClick={() => deleteTicket(ticketId)}>Delete Ticket</button>
+                                    <Link href="/tickets" className="btn btn-primary float-end mb-3 me-2 buttom-align" type="button">Return Back</Link>
+                                    
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
 
 
             </div>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "@/lib/auth";
+import { useRouter } from 'next/navigation';
 import "./login.css"
 import { useRouter } from "next/navigation";
 
@@ -12,6 +13,20 @@ const ReduxLogin = () => {
     const errorMessage = useSelector(state => state.auth.errorMessage);
     const user = useSelector(state => state.auth.user);
     const router = useRouter();
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const router = useRouter();
+
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     dispatch(loginUser(username, password));
+    // };
+    
+    useEffect(() => {
+        if (user) {
+            router.push('/tickets'); 
+        }
+    }, [user, router]);
 
     const handleSubmit = (event) => {
         event.preventDefault();

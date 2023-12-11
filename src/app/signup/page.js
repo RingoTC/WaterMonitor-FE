@@ -3,35 +3,28 @@ import "./signup.css"
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "@/lib/auth";
+import { useRouter } from 'next/navigation';
 import * as client from "./client";
 
 export default function SingUp() {
+    const router = useRouter();
     const [error, setError] = useState("");
     const [user, setUser] = useState({
-        username:"" , password:"" , first_name:"", last_name:"" , email: "", role: "USER" });
+        username:"" , password:"" , firstName:"", 
+        lastName:"" , email: "", role: "REPORTER" ,
+        company:"n/a.", cellphone:"", 
+        city: "", country:"", like: {}});
     const [users, setUsers] = useState([]);
-    // const createUser = async () => {
-    //     try {
-    //         const newUser = await client.createUser(user);
-    //         setUsers([newUser, ...users]);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
 
     const signup = async () => {
         try {
             const newUser = await client.signup(user);
             setUsers([newUser, ...users]);
+            router.push(`/profile?username=${user.username}`);
         } catch (err) {
             setError(err.response.data.message);
         }
     };
-    console.log(user.username);
-    console.log(user.password);
-    console.log(user.first_name);
-    console.log(user.last_name);
-    console.log(users);
     console.log(user.role);
     
     return(
@@ -63,11 +56,11 @@ export default function SingUp() {
                             >
                                 First name
                             </label>
-                            <input value={user.first_name}
-                                onChange={(e) => setUser({ ...user, first_name: e.target.value })}
+                            <input value={user.firstName}
+                                onChange={(e) => setUser({ ...user, firstName: e.target.value })}
                                 type="text" 
                                 class="form-control" 
-                                id="validationCustom02"
+                                id="validationCustom02" required
                             />
                             <div class="valid-feedback">
                             Looks good!
@@ -76,27 +69,29 @@ export default function SingUp() {
                         <div class="col-md-4">
                             <label 
                                 for="validationCustomUsername" 
-                                className="form-label"
+                                className="form-label" 
                             >
                                 Last Name
                             </label>
                             <div class="input-group has-validation">
                             {/* <span class="input-group-text" id="inputGroupPrepend">@</span> */}
                             <input 
-                                value={user.last_name}
-                                onChange={(e) => setUser({ ...user, last_name: e.target.value })}
+                                value={user.lastName}
+                                onChange={(e) => setUser({ ...user, lastName: e.target.value })}
                                 type="text" 
                                 className="form-control" 
                                 id="validationCustomUsername" 
-                                aria-describedby="inputGroupPrepend"
+                                aria-describedby="inputGroupPrepend" required
                             />
                             <div className="invalid-feedback">
                                 Please choose a username.
                             </div>
                             </div>
                         </div>
+
+
                         
-                        <div class="col-md">
+                        <div class="col-md mb-3">
                             <div class="form-floating">
                                 <input 
                                     value={user.email}
@@ -104,23 +99,49 @@ export default function SingUp() {
                                     type="email" 
                                     className="form-control" 
                                     id="floatingInputGrid" 
-                                    placeholder="name@example.com" 
+                                    placeholder="name@example.com" required
                                 />
                                 <label for="floatingInputGrid">Email address</label>
                             </div>
                         </div><br/>
                        
-                        <div class="col-md">
+                        <div class="col-md mb-3">
                             <div class="form-floating">
                                 <select value={user.role} onChange={(e) => setUser({ ...user, role: e.target.value })} class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                    <option selected>User</option>
-                                    <option value="User Administrator">User Administrator</option>
-                                    <option value="System Administrator">System Administrator</option>
+                                    <option value="REPORTER" selected>Reporter</option>
+                                    <option value="ADMIN">User Administrator</option>
+                                    <option value="MANAGER">Manager</option>
                                 </select>
                                 <label for="floatingSelect">Account Type</label>
                             </div>
                         </div>
-                        
+
+
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Company: </label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" value={user.company} 
+                                    onChange={(e) => setUser({ ...user, company: e.target.value })} required></input>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <label for="inputPassword3" class="col-sm-2 col-form-label" value={user.cellphone}
+                                    onChange={(e) => setUser({ ...user, cellphone: e.target.value })} >Cell Phone</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputPassword3"></input>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" placeholder="City" aria-label="City"
+                                        value={user.city} onChange={(e) => setUser({ ...user, city: e.target.value })}></input>
+                            </div>
+                            <div class="col-sm">
+                                <input type="text" class="form-control" placeholder="Country" aria-label="Country"
+                                        value={user.country} onChange={(e) => setUser({ ...user, country: e.target.value })}></input>
+                            </div>
+                        </div>
 
 
                         <div class="col-12 align-items-center">
@@ -144,14 +165,6 @@ export default function SingUp() {
                             </div>
                         </div>
 
-                        <div class="col-12 align-items-center">
-                            <div class="col-auto">
-                                <label for="inputPassword6" class="col-form-label">Conform Password</label>
-                            </div>
-                            <div class="col-auto">
-                                <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline"/>
-                            </div>
-                        </div>
 
                         <div class="col-12">
                             <div class="form-check">

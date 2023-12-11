@@ -5,6 +5,7 @@ const API_BASE = process.env.REACT_APP_BACKEND || 'http://localhost:9000';
 const LOGIN_REQUEST = 'LOGIN_REQUEST';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
+const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
 const requestLogin = () => ({ type: LOGIN_REQUEST });
 const receiveLogin = user => {
@@ -43,6 +44,12 @@ export default function auth(state = {
                 user: null,
                 errorMessage: action.message
             };
+        case 'LOGOUT_SUCCESS':
+            return {
+                ...state,
+                isAuthenticated: false,
+                user: null
+            };
         default:
             return state;
     }
@@ -68,5 +75,15 @@ export const loginUser = (username, password) => dispatch => {
         .catch(error => {
             const errorMessage = error.response ? error.response.data.message : error.message;
             dispatch(loginError(errorMessage));
+        });
+};
+
+export const logoutUser = () => dispatch => {
+    return axios.get(`${API_BASE}/auth/logout`, {}, { withCredentials: true })
+        .then(() => {
+            dispatch({ type: 'LOGOUT_SUCCESS' });
+        })
+        .catch(error => {
+            console.error('Logout error:', error);
         });
 };
