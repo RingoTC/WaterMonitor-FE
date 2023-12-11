@@ -44,7 +44,7 @@ export default function Profile() {
                     <div>
                         <PersonInfoCard />
                         <div className="row  justify-content-lg-center mt-5">
-                            <div className="col-2 col-lg-2 bg-light" style={{marginRight:'15px'}}>
+                            <div className="col-2 col-lg-2 bg-light d-none d-lg-block" style={{marginRight:'15px'}}>
                                     <h5 className='border-bottom mt-1'>Report to</h5>
                                     <br />
                                     <h5 className='border-bottom'>Work Together With</h5>
