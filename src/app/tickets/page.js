@@ -185,11 +185,6 @@ export default function Tickets() {
         }
     };
 
-    // useEffect(() => { 
-    //     fetchTickets(),
-    //     fetchUsers(); 
-    // }, []);
-
   //   useEffect(() => {
   //     const fetchData = async () => {
   //         await fetchTickets();
@@ -198,6 +193,7 @@ export default function Tickets() {
   
   //     fetchData();
   // }, [router.asPath]); 
+  
   const loadTickets = async () => {
     try {
         const fetchedTickets = await client.findAllTickets();
