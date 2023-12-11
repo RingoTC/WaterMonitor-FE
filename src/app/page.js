@@ -1,24 +1,17 @@
+"use client";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Alert from 'react-bootstrap/Alert';
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
 
 export default function Home() {
+    const router = useRouter();
+    useEffect(()=>{
+        router.push("/home")
+    })
   return (
     <div>
-        <h1>Home</h1>
-        {[
-        'primary',
-        'secondary',
-        'success',
-        'danger',
-        'warning',
-        'info',
-        'light',
-        'dark',
-        ].map((variant) => (
-        <Alert key={variant} variant={variant}>
-            This is a {variant} alert—check it out!
-        </Alert>
-        ))}
+        Loading...
     </div>
   )
 }
