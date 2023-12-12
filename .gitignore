@@ -44,6 +44,8 @@ Thumbs.db
 *.temp
 *.swp
 
+.out/
+
 # Database storage (if local MongoDB used)
 mongodb-data/
 
