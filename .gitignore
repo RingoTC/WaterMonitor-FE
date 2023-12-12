@@ -49,4 +49,4 @@ mongodb-data/
 
 # End of .gitignore
 
-.env.development
+.env*
