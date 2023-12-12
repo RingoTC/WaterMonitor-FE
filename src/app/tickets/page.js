@@ -235,7 +235,7 @@ export default function Tickets() {
                         <div className="col-12 d-flex justify-content-between">
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><a href="#">Ticket</a></li>
+                                    <li className="breadcrumb-item"><Link href={null}>Ticket</Link></li>
                                     <li className="breadcrumb-item active" aria-current="page">Home</li>
                                 </ol>
                             </nav>

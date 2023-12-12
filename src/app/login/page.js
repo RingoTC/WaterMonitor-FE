@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser, logoutUser } from "@/lib/auth";
 import { useRouter } from 'next/navigation';
 import "./login.css"
+import Link from "next/link";
 
 const ReduxLogin = () => {
     const [username, setUsername] = useState("");
@@ -51,7 +52,7 @@ const ReduxLogin = () => {
                                     <h2 className="login-title">Let&apos;s Log In!</h2>
                                     <form onSubmit={handleSubmit}>
                                         <div className="mb-3">
-                                        <label for="exampleInputEmail1" className="form-label"><b>Username</b></label>
+                                        <label htmlFor="exampleInputEmail1" className="form-label"><b>Username</b></label>
                                             <input
                                                 className="form-control" 
                                                 id="exampleInputEmail1" 
@@ -65,7 +66,7 @@ const ReduxLogin = () => {
                                         </div>
 
                                         <div className="mb-3">
-                                            <label for="exampleInputPassword1" className="form-label"><b>Password</b></label>
+                                            <label htmlFor="exampleInputPassword1" className="form-label"><b>Password</b></label>
                                             <input
                                                 className="form-control" id="exampleInputPassword1" 
                                                 placeholder="Enter your password"
@@ -74,7 +75,7 @@ const ReduxLogin = () => {
                                                 type="password"
                                             />
                                         </div>
-                                        <div class="d-grid gap-2">
+                                        <div className="d-grid gap-2">
                                             <button className="btn btn-primary login-button" type="submit">Log in</button>
                                         
                                         </div>
@@ -82,7 +83,7 @@ const ReduxLogin = () => {
                                     </form>
 
                                     <div className="login-signup">Don&apos;t have an account?
-                                        <a href="/signup"> Sign Up</a> 
+                                        <Link href={"/signup"}> Sign Up</Link>
                                     </div>
                                 </div>
                             </div>

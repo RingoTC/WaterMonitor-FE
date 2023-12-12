@@ -110,27 +110,27 @@ export default function UserInfo() {
             <hr/>
             
 
-            <div class="container text-left">
-                <div class="row row-format ">
-                    <div class="col">
+            <div className="container text-left">
+                <div className="row row-format ">
+                    <div className="col">
                         <ImCalendar className="info-icon"/> Date: <br/> {currentDate}
                     </div>
-                    <div class="col">
+                    <div className="col">
                         <HiOutlineTicket className="info-icon"/> Total Tickets: <br/> {totalTickets}
                     </div>
                 </div>
 
-                <div class="row row-format ">
-                    <div class="col">
+                <div className="row row-format ">
+                    <div className="col">
                         <TiTickOutline className="info-icon"/> Complete Tickets: <br/> {totalComplete}
                     </div>
-                    <div class="col">
+                    <div className="col">
                         <FiLoader className="info-icon"/> Loading Tickets: <br/> {totalLoading}
                     </div>
                 </div>
 
-                <div class="row row-format ">
-                    <div class="col">
+                <div className="row row-format ">
+                    <div className="col">
                         <GiEarthAmerica className="info-icon"/> Current userLocation: <br/> {userLocation}
                     </div>
                     

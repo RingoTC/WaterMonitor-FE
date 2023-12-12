@@ -63,14 +63,15 @@ export default function EditProfile() {
                             />
                         </div>
 
-                        <div className="form-group mb-3">
-                            <label>Password</label>
-                            <input className ="form-control"
-                                   type="text"
-                                   value={userData?.password}
-                                   onChange={(e) => dispatch(setUserData({ ...userData, password: e.target.value }))}
-                            />
-                        </div>
+                        {/*password should not be changed in here*/}
+                        {/*<div className="form-group mb-3">*/}
+                        {/*    <label>Password</label>*/}
+                        {/*    <input className ="form-control"*/}
+                        {/*           type="text"*/}
+                        {/*           value={userData?.password}*/}
+                        {/*           onChange={(e) => dispatch(setUserData({ ...userData, password: e.target.value }))}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
 
                         <div className="form-group mb-3">
                             <label>Email</label>

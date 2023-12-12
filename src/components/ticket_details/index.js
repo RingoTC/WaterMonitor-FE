@@ -80,12 +80,12 @@ const TicketDetails = ({ currentTicket }) => {
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="longitude" className="form-label">Longitude:</label>
+                    <div className="mb-3">
+                        <label htmlFor="longitude" className="form-label">Longitude:</label>
                         <input type="number" className="form-control" id="longitude" value={ticket.LongitudeMeasure} disabled></input>
                     </div>
-                    <div class="mb-3">
-                        <label for="latitude" className="form-label">Latitude:</label>
+                    <div className="mb-3">
+                        <label htmlFor="latitude" className="form-label">Latitude:</label>
                         <input type="number" className="form-control" id="latitude" value={ticket.LatitudeMeasure} disabled></input>
                     </div>
 
@@ -106,16 +106,16 @@ const TicketDetails = ({ currentTicket }) => {
                         <label htmlFor="ph" className="form-label">pH Value:</label>
                         <input type="number" className="form-control" id="pH_Value" value={ticket.pH_Value} onChange={handleInputChange}></input>
                     </div>
-                    <div class="mb-3">
-                        <label for="indicatorName" className="form-label">Indicator Name:</label>
+                    <div className="mb-3">
+                        <label htmlFor="indicatorName" className="form-label">Indicator Name:</label>
                         <input type="email" className="form-control" id="indicatorName" value={ticket.IndicatorsName} onChange={handleInputChange}></input>
                     </div>
-                    <div class="mb-3">
-                        <label for="indicatorValue" className="form-label">Indicator Value:</label>
+                    <div className="mb-3">
+                        <label htmlFor="indicatorValue" className="form-label">Indicator Value:</label>
                         <input type="number" className="form-control" id="indicatorValue" value={ticket.value} onChange={handleInputChange}></input>
                     </div>
-                    <div class="mb-3">
-                        <label for="indicatorUnit" className="form-label">Indicator Unit:</label>
+                    <div className="mb-3">
+                        <label htmlFor="indicatorUnit" className="form-label">Indicator Unit:</label>
                         <input type="email" className="form-control" id="indicatorUnit" value={ticket.Unit} onChange={handleInputChange}></input>
                     </div>
 
