@@ -33,11 +33,11 @@ const ReduxLogin = () => {
             // Redirect to the profile page
             router.push('/home');
         }
+
     }, [user]);
  
     return (
         <div className="home p-0">
-            
                     {user ? (
                         <div>
 

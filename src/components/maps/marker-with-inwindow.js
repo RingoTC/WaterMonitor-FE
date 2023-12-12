@@ -15,7 +15,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import {Button, InputGroup, Form, Table} from "react-bootstrap";
 import {fetchMaps, updateFetchMaps} from "@/lib/maps";
 
-const API_BASE = process.env.REACT_APP_BACKEND || "http://localhost:9000";
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
     const [infowindowOpen, setInfowindowOpen] = useState(false);
     const [markerRef, marker] = useAdvancedMarkerRef();

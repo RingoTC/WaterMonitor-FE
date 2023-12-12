@@ -29,7 +29,7 @@ export default function SingUp() {
     //     }
     // };
     const signup = async (event) => {
-        const USERS_API = `http://localhost:9000/auth`;
+        const USERS_API = `${process.env.NEXT_PUBLIC_BACKEND}/auth`;
         event.preventDefault();
         try {
             const response = await axios.post(

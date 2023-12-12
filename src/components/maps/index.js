@@ -20,7 +20,7 @@ export default function Maps(){
         dispatch(fetchMaps());
     }, [dispatch]);
 
-    const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "AIzaSyCyZWsP89KU5H3hNnWF2s53HFJYAlOZ41o";
+    const API_KEY = process.env.NEXT_PUBLIC_GOOGLE;
 
     return (
         <div className="maps" style={{height: '100%', width: '100%'}}>

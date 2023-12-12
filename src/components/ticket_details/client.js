@@ -1,6 +1,6 @@
 import axios from "axios";
-
-const SITES_API = `http://localhost:9000/site`;
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
+const SITES_API = `${API_BASE}/site`;
 
 export const findAllSites = async () => {
     const response = await axios.get(`${SITES_API}/all`);

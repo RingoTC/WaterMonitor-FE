@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useSelector} from "react-redux";
-const API_BASE = process.env.REACT_APP_BACKEND || "http://localhost:9000";
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 
 const site_REQUEST = "site_REQUEST";
 const site_SUCCESS = "site_SUCCESS";

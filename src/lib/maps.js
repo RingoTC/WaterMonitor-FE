@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useSelector} from "react-redux";
-const API_BASE = process.env.REACT_APP_BACKEND || "http://localhost:9000";
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 
 const MAPS_REQUEST = "MAPS_REQUEST";
 const MAPS_SUCCESS = "MAPS_SUCCESS";

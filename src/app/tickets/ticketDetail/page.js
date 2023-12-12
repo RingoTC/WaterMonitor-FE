@@ -192,7 +192,7 @@ export default function Tickets() {
                                         Update Ticket
                                     </button>
                                     <button className="btn btn-danger float-end mb-3 me-2 buttom-align" type="button" onClick={() => deleteTicket(ticketId)}>Delete Ticket</button>
-                                    <Link href="/tickets" className="btn btn-primary float-end mb-3 me-2 buttom-align" type="button">Return Back</Link>
+                                    <Link href={"/tickets"} className="btn btn-primary float-end mb-3 me-2 buttom-align" type="button">Return Back</Link>
                                     
                                 </div>
                             </div>

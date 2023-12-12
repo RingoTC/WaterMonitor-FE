@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const USERS_API = `http://localhost:9000/auth`;
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
+const USERS_API = `${API_BASE}/auth`;
 
 export const signup = async (user) => {
     const response = await axios.post(

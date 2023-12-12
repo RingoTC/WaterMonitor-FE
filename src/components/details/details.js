@@ -4,7 +4,7 @@ import axios from 'axios';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Dropdown} from "react-bootstrap";
-const API_BASE = process.env.REACT_APP_BACKEND || "http://localhost:9000";
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 const setProvinces = (provinces) => ({
     type: 'SET_PROVINCES',
     payload: provinces,

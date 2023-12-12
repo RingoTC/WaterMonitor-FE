@@ -1,7 +1,9 @@
 import Axios from 'axios';
 
+
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 const client = Axios.create({
-    baseURL: 'http://localhost:9000/user',
+    baseURL: `${API_BASE}/user`,
 });
 
 export const userProfile = async (username) => {

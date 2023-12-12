@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {Row, Col, Dropdown, Table, Container} from 'react-bootstrap';
 import './details.css';
-const API_BASE = process.env.REACT_APP_BACKEND || 'http://localhost:9000';
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import Spinner from "react-bootstrap/Spinner";

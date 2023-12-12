@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_BACKEND || 'http://localhost:9000';
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 
 const LOGIN_REQUEST = 'LOGIN_REQUEST';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';

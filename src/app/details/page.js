@@ -15,7 +15,7 @@ const DetailsPage = ({ sectionData }) => {
     const [loading, setLoading] = useState(false);
     const auth = useSelector(state => state.auth);
 
-    const API_BASE = process.env.REACT_APP_BACKEND || "http://localhost:9000";
+    const API_BASE = process.env.NEXT_PUBLIC_BACKEND;
 
     const fetchDescription = async (description) => {
         const response = await fetch(`${API_BASE}/openai/${description}`);
@@ -34,7 +34,7 @@ const DetailsPage = ({ sectionData }) => {
             const months = ['202310', '202309', '202308', '202307', '202306'];
 
             const promises = months.map(async (month) => {
-                const response = await fetch(`http://localhost:9000/waterpub/Home/GetSectionDataList?sectionName=${SectionName}&cityCode=${CityName}&provinceCode=${ProvinceName}&taskMonth=${month}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/waterpub/Home/GetSectionDataList?sectionName=${SectionName}&cityCode=${CityName}&provinceCode=${ProvinceName}&taskMonth=${month}`);
                 const monthData = await response.json();
                 return { month, data: monthData };
             });

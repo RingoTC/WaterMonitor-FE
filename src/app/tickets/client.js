@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const TICKETS_API = `http://localhost:9000/record`;
-const USERS_API = `http://localhost:9000/user`;
-const SITES_API = `http://localhost:9000/site`;
+const TICKETS_API = `${process.env.NEXT_PUBLIC_BACKEND}/record`;
+const USERS_API = `${process.env.NEXT_PUBLIC_BACKEND}/user`;
+const SITES_API = `${process.env.NEXT_PUBLIC_BACKEND}/site`;
 
 export const findAllTickets = async () => {
     const response = await axios.get(`${TICKETS_API}/all`);
