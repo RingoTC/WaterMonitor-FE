@@ -55,3 +55,6 @@ mongodb-data/
 .env.local
 .env.production
 .env.development
+
+
+next.config.js

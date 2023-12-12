@@ -255,7 +255,7 @@ export default function Tickets() {
                     <div className="list-group col-4 mb-5">
                         <h5>Connections: </h5>
                         {currentUsers.map((user) => (
-                            <Link key={user._id} href="../profile" className="list-group-item list-group-item-action">
+                            <Link key={user._id} href={`/guest?username=${user.username}`} className="list-group-item list-group-item-action">
                                 <div className="d-flex w-100 justify-content-between">
                                     <h6 className="mb-1">
                                     {user.firstName} {user.lastName} 

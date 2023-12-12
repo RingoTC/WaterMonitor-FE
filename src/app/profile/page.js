@@ -7,9 +7,11 @@ import * as client from "@/app/profile/client";
 import {useDispatch, useSelector} from "react-redux";
 import {setUserData} from "@/lib/userDataReducer";
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation'
 
 export default function Profile() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     // Add a path parameter into this page
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
@@ -17,12 +19,14 @@ export default function Profile() {
     const userData = useSelector(state => state.userData);
     // const [userData, setUserData] = useState({});
 
+    const givenUsername = searchParams.get('username');
+
 
     //TODO: Fetch the user in the path param or if the path parameter == self, fetch yourself.
     const fetchUser = async () => {
         try {
-            const userProfile = await client.userProfile(user.username);
-            dispatch(setUserData(userProfile));
+               const userProfile = await client.userProfile(user.username);
+               dispatch(setUserData(userProfile));
             // setUserData(userProfile);
         } catch (error) {
             console.error(error)
@@ -42,7 +46,7 @@ export default function Profile() {
             <div className="row justify-content-between">
 
                     <div>
-                        <PersonInfoCard />
+                        <PersonInfoCard userData={userData} />
                         <div className="row  justify-content-lg-center mt-5">
                             <div className="col-2 col-lg-2 bg-light" style={{marginRight:'15px'}}>
                                     <h5 className='border-bottom mt-1'>Report to</h5>
