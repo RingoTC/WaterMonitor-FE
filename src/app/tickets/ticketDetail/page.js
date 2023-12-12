@@ -99,7 +99,7 @@ export default function Tickets() {
 
     return(
         <div className="home p-0">
-            <div className="container mb-5">
+            <div className="container-fluid mb-5">
                 <div className="row">
 
                     <div className="col-12 tickets-top-nav">
