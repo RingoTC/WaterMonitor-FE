@@ -9,7 +9,8 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import * as client from "./client";
-import { logoutUser } from "@/lib/auth";
+import { logoutUser, fetchAuth } from "@/lib/auth";
+import axios from "axios";
 
 export default function UserInfo() {
     const user = useSelector(state => state.auth.user);
@@ -22,7 +23,7 @@ export default function UserInfo() {
     const [reminder, setReminder] = useState(user.reminder);
     const dispatch = useDispatch();
     const router = useRouter();
-    
+
     const handleSave = async () => {
         await client.updateUserReminder(user.username, reminder);
         setIsEditable(false);
@@ -37,7 +38,8 @@ export default function UserInfo() {
     // };
 
     const handleChange = (e) => {
-        setReminder(e.target.value); 
+        // http://localhost:9000/auth/checkAuth/
+        setReminder(e.target.value);
     };
 
     const fetchTotalTicketCount = async () => {
@@ -97,13 +99,30 @@ export default function UserInfo() {
             });
     };
 
+    const fetchUser = async () => {
+        axios.post(`http://localhost:9000/auth/checkAuth/`, { reminder: e.target.value }, { withCredentials: true })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
     useEffect(() => {
+        // Fetch authentication information
+        dispatch(fetchAuth())
+            .catch(error => {
+                console.error('Fetch auth failed:', error);
+            });
+
+        // Fetch other information
         fetchTotalTicketCount();
         fetchTotalCompleteCount();
         fetchTotalLoadingCount();
         getuserLocation();
         setReminder(user.reminder);
-    }, [user.reminder]);
+    }, [user.reminder, dispatch]);
 
     console.log("Updating reminder for user:", user.username, "New reminder:", reminder);
 
