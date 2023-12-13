@@ -47,40 +47,42 @@ export default function Profile() {
 
                     <div>
                         <PersonInfoCard userData={userData} />
-                        <div className="row  justify-content-lg-center mt-5">
-                            <div className="col-2 col-lg-2 bg-light" style={{marginRight:'15px'}}>
+                        <div className="container">
+                            <div className="row  justify-content-lg-center mt-5">
+                                <div className="col-2 d-none d-lg-block col-lg-2 bg-light" style={{marginRight:'15px'}}>
                                     <h5 className='border-bottom mt-1'>Report to</h5>
                                     <br />
                                     <h5 className='border-bottom'>Work Together With</h5>
                                     <p>abc</p>
-                            </div>
+                                </div>
 
-                        <div className="col-10 col-sm-12 col-lg-8 bg-light mb-5">
-                            <div className="row">
-    
-                                <h3 className="mt-3">SKILLS</h3>
+                                <div className="col-10 col-sm-12 col-lg-8 bg-light mb-5">
 
-                                <ul className="list-group">
-                                    {userData.skills && userData.skills.map((skill, index) => (
-                                        <li key={index} className="list-group-item ">
-                                            <div className="d-flex w-100 justify-content-between">
-                                                <h5>{skill.name}</h5>
-                                                {skill.certified &&
-                                                    <>
-                                                        <small className='text-muted'>
-                                                            <p>Certified {new Date(skill.certificationIssueDate).toLocaleDateString()}</p>
-                                                        </small>
-                                                    </>
-                                                }
-                                            </div>
-                                            <p>Proficiency: {skill.proficiency}</p>
-                                        </li>
-                                    ))}
-                                </ul>
-    
+
+                                    <h3 className="mt-3">SKILLS</h3>
+
+                                    <ul className="list-group">
+                                        {userData.skills && userData.skills.map((skill, index) => (
+                                            <li key={index} className="list-group-item ">
+                                                <div className="d-flex w-100 justify-content-between">
+                                                    <h5>{skill.name}</h5>
+                                                    {skill.certified &&
+                                                        <>
+                                                            <small className='text-muted'>
+                                                                <p>Certified {new Date(skill.certificationIssueDate).toLocaleDateString()}</p>
+                                                            </small>
+                                                        </>
+                                                    }
+                                                </div>
+                                                <p>Proficiency: {skill.proficiency}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                </div>
                             </div>
                         </div>
-                        </div>
+
                     </div>
 
             </div>
