@@ -59,7 +59,6 @@ export default function Profile() {
     return (
 
             <div className="row justify-content-between">
-                {JSON.stringify(user)}
                     <div>
                         <PersonInfoCard userData={userData}/>
                         <div className="container">
