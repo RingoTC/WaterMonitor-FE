@@ -12,25 +12,29 @@ import * as client from "./client";
 import { logoutUser } from "@/lib/auth";
 
 export default function UserInfo() {
+    const user = useSelector(state => state.auth.user);
     const currentDate = new Date().toISOString().split('T')[0]; 
     const [totalTickets, setTotalTickets] = useState(0);
     const [totalComplete, setTotalComplete] = useState(0);
     const [totalLoading, setTotalLoading] = useState(0);
     const [userLocation, setuserLocation] = useState('Fetching userLocation...');
     const [isEditable, setIsEditable] = useState(false);
-    const [reminder, setReminder] = useState("");
-    const user = useSelector(state => state.auth.user);
+    const [reminder, setReminder] = useState(user.reminder);
     const dispatch = useDispatch();
     const router = useRouter();
     
+    const handleSave = async () => {
+        await client.updateUserReminder(user.username, reminder);
+        setIsEditable(false);
+    };
 
     const handleUpdate = () => {
         setIsEditable(true); 
     };
 
-    const handleSave = () => {
-        setIsEditable(false);
-    };
+    // const handleSave = () => {
+    //     setIsEditable(false);
+    // };
 
     const handleChange = (e) => {
         setReminder(e.target.value); 
@@ -98,7 +102,10 @@ export default function UserInfo() {
         fetchTotalCompleteCount();
         fetchTotalLoadingCount();
         getuserLocation();
-    }, []);
+        setReminder(user.reminder);
+    }, [user.reminder]);
+
+    console.log("Updating reminder for user:", user.username, "New reminder:", reminder);
 
   
     return (

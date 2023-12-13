@@ -14,7 +14,7 @@ export default function SingUp() {
     const [user, setUser] = useState({
         username:"" , password:"" , firstName:"",
         lastName:"" , email: "", role: "REPORTER" ,
-        company:"n/a.", cellphone:"",
+        company:"n/a.", cellphone:"",reminder:"",
         city: "", country:"", like: {}});
     const [users, setUsers] = useState([]);
 
