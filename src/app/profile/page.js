@@ -58,7 +58,7 @@ export default function Profile() {
 
     return (
 
-            <div className="row justify-content-between">
+            <div className="row justify-content-between p-3">
                     <div>
                         <PersonInfoCard userData={userData}/>
                         <div className="container">
