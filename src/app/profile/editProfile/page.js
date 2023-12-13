@@ -125,6 +125,21 @@ export default function EditProfile() {
                             />
                         </div>
 
+                        <div className="form-group mb-3">
+                            <label>Role</label>
+                            <select
+                                className="form-control"
+                                value={userData?.role}
+                                onChange={(e) => dispatch(setUserData({ ...userData, role: e.target.value }))}
+                            >
+                                <option value="REPORTER">REPORTER</option>
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="VIEWER">VIEWER</option>
+                            </select>
+                        </div>
+
+
+
                         <Button style={{marginRight:'5px'}} onClick={updateUser}>
                             Update
                         </Button>
