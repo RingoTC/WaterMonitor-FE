@@ -132,8 +132,8 @@ export default function SingUp() {
                             <div className="form-floating">
                                 <select value={user.role} onChange={(e) => setUser({ ...user, role: e.target.value })} className="form-select" id="floatingSelect" aria-label="Floating label select example">
                                     <option value="REPORTER" selected>Reporter</option>
-                                    <option value="ADMIN">User Administrator</option>
-                                    <option value="MANAGER">Manager</option>
+                                    <option value="ADMIN">Administrator</option>
+                                    <option value="VIEWER">Viewer</option>
                                 </select>
                                 <label htmlFor="floatingSelect">Account Type</label>
                             </div>

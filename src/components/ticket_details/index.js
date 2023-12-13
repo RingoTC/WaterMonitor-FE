@@ -88,9 +88,7 @@ const TicketDetails = ({ currentTicket }) => {
                         <label htmlFor="latitude" className="form-label">Latitude:</label>
                         <input type="number" className="form-control" id="latitude" value={ticket.LatitudeMeasure} disabled></input>
                     </div>
-                    999
-                    {JSON.stringify(ticket)}
-                    <h4>Indicators 123</h4>
+                    <h4>Indicators</h4>
                     <div className="mb-3">
                         <label htmlFor="cod" className="form-label">COD Value:</label>
                         <input type="number" className="form-control" id="COD" value={ticket.COD_Value} onChange={handleInputChange}></input>

@@ -248,9 +248,13 @@ export default function Tickets() {
                                         <li className="breadcrumb-item active" aria-current="page">Home</li>
                                     </ol>
                                 </nav>
-                                <button className="btn btn-primary btn-sm" type="button" onClick={handleAddTicket}>
-                                    + <GiTicket/> New Ticket !
-                                </button>
+                                {
+                                    user.role !== 'VIEWER' && (
+                                        <button className="btn btn-primary btn-sm" type="button" onClick={handleAddTicket}>
+                                            + <GiTicket/> New Ticket !
+                                        </button>
+                                    )
+                                }
                                 {/* <button className="btn btn-primary btn-sm" onClick={createTicket} type="button">+ <GiTicket/>  New Ticket ! </button> */}
                             </div>
                             <hr/>

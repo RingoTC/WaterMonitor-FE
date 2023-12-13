@@ -6,13 +6,13 @@ import { useState, useEffect } from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as client from "../client";
-
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Tickets() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const ticketId = searchParams.get('_id')
-    
+    const user = useSelector(state => state.auth.user);
     const [ticket, setTicket] = useState({
         MonitoringLocationIdentifier:"" , 
         LongitudeMeasure:"" , 
@@ -181,13 +181,16 @@ export default function Tickets() {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="d-grid gap-2 d-md-block">                                    
-                                    <button className="btn btn-success float-end mb-3 me-2 buttom-align" 
-                                            type="button" 
-                                            onClick={() => updateTicketHandler()}>
-                                        Update Ticket
-                                    </button>
-                                    <button className="btn btn-danger float-end mb-3 me-2 buttom-align" type="button" onClick={() => deleteTicket(ticketId)}>Delete Ticket</button>
+                                <div className="d-grid gap-2 d-md-block">
+                                    {user && user.role !== 'VIEWER' && (
+                                        <><button className="btn btn-success float-end mb-3 me-2 buttom-align"
+                                                  type="button"
+                                                  onClick={() => updateTicketHandler()}>
+                                            Update Ticket
+                                        </button>
+                                            <button className="btn btn-danger float-end mb-3 me-2 buttom-align" type="button" onClick={() => deleteTicket(ticketId)}>Delete Ticket</button>
+                                        </>
+                                )}
                                     <Link href={"/tickets"} className="btn btn-primary float-end mb-3 me-2 buttom-align" type="button">Return Back</Link>
                                     
                                 </div>

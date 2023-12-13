@@ -96,7 +96,6 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                     }}>
                     <div className="text-start" style={{"width":"300px"}}>
                         <p>{Description}</p>
-                        {JSON.stringify(current)}
                         {current ? (
                             <Table striped bordered hover style={{ lineHeight: '16px', fontSize: '14px' }}>
                                 <tbody>
@@ -133,8 +132,8 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                             </Alert>
                         )}
                         <div className="action">
-                            <Button variant="primary"><Link href={`/tickets`} style={{"color":"#fff","textDecoration":"none"}}>Submit a Ticket</Link></Button>
-                            {user && <Button variant="success"><Link href={`/tickets/ticketDetail?_id=${current._id}`} style={{"color":"#fff","textDecoration":"none"}}>Edit</Link></Button>}
+                            <Button variant="primary"><Link href={`/tickets`} style={{"color":"#fff","textDecoration":"none"}}>View all Tickets</Link></Button>
+                            {user && (user.role === 'REPORTER' || user.role === 'ADMIN') && <Button variant="success"><Link href={`/tickets/ticketDetail?_id=${current._id}`} style={{"color":"#fff","textDecoration":"none"}}>Edit</Link></Button>}
                             {user && user.role === 'ADMIN' && <Button variant="danger" onClick={handleDelete}>Delete</Button>}
                         </div>
                     </div>
