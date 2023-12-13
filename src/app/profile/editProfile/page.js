@@ -74,6 +74,24 @@ export default function EditProfile() {
                         {/*</div>*/}
 
                         <div className="form-group mb-3">
+                            <label>Position</label>
+                            <input className ="form-control"
+                                   type="text"
+                                   value={userData?.position}
+                                   onChange={(e) => dispatch(setUserData({ ...userData, position: e.target.value }))}
+                            />
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <label>Company</label>
+                            <input className ="form-control"
+                                   type="text"
+                                   value={userData?.company}
+                                   onChange={(e) => dispatch(setUserData({ ...userData, company: e.target.value }))}
+                            />
+                        </div>
+
+                        <div className="form-group mb-3">
                             <label>Email</label>
                             <input className ="form-control"
                                    type="email"
@@ -88,6 +106,24 @@ export default function EditProfile() {
                                    type="text"
                                    value={userData?.cellphone}
                                    onChange={(e) => dispatch(setUserData({ ...userData, cellphone: e.target.value }))}
+                            />
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <label>City</label>
+                            <input className ="form-control"
+                                   type="text"
+                                   value={userData?.city}
+                                   onChange={(e) => dispatch(setUserData({ ...userData, city: e.target.value }))}
+                            />
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <label>Country</label>
+                            <input className ="form-control"
+                                   type="text"
+                                   value={userData?.country}
+                                   onChange={(e) => dispatch(setUserData({ ...userData, country: e.target.value }))}
                             />
                         </div>
 
