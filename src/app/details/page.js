@@ -71,7 +71,7 @@ const DetailsPage = ({ sectionData }) => {
                             <Accordion.Item eventKey={index} key={index}>
                                 <Accordion.Header>{monthData.month}</Accordion.Header>
                                 <Accordion.Body>
-                                    <Table striped bordered hover>
+                                    <Table striped bordered hover style={{"overflow":"hidden"}}>
                                         <thead>
                                         <tr>
                                             <th width={"10%"}>Key</th>
