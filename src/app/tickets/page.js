@@ -11,6 +11,7 @@ import { BsTrash3Fill} from "react-icons/bs";
 import {useSelector} from "react-redux";
 import {Container} from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
  
 export default function Tickets() {
     const router = useRouter();
@@ -30,6 +31,8 @@ export default function Tickets() {
     const usersPerPage = 3; 
     const userPageCount = Math.ceil(users.length / usersPerPage);
     const paginateUsers = (pageNumber) => setCurrentUserPage(pageNumber);
+
+    const [loading, setLoading] = useState(true);
 
     const renderUserPagination = () => {
         let pages = [];
@@ -200,16 +203,20 @@ export default function Tickets() {
   
   //     fetchData();
   // }, [router.asPath]); 
-  const loadTickets = async () => {
-    try {
-        const fetchedTickets = await client.findAllTickets();
-        setTickets(fetchedTickets);
-    } catch (error) {
-        console.error("Error loading tickets:", error);
-    }
-  };
+    const loadTickets = async () => {
+        try {
+            setLoading(true); // Set loading to true before fetching tickets
+            const fetchedTickets = await client.findAllTickets();
+            setTickets(fetchedTickets);
+        } catch (error) {
+            console.error("Error loading tickets:", error);
+        } finally {
+            setLoading(false); // Set loading to false after fetching tickets
+        }
+    };
 
-  const loadUsers = async () => {
+
+    const loadUsers = async () => {
     try {
         const fetchedUsers = await client.findAllUsers();
         setUsers(fetchedUsers); 
@@ -227,121 +234,142 @@ export default function Tickets() {
     }
 }, [user, router]);
 
-    return(
-        <div className="home p-0">
-          {user && (
-            <div className="container">
-                <div className="row">
+    return (
+        <div className="p-0">
+            {user && (
+                <div className="container">
+                    <div className="row">
 
-                    <div className="col-12 tickets-top-nav ">
-                        <div className="col-12 d-flex justify-content-between">
-                            <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><Link href={"/tickets"}>Ticket</Link></li>
-                                    <li className="breadcrumb-item active" aria-current="page">Home</li>
-                                </ol>
-                            </nav>
-                            <button className="btn btn-primary btn-sm" type="button" onClick={handleAddTicket}>
-                                + <GiTicket/> New Ticket !
-                            </button>
-                            {/* <button className="btn btn-primary btn-sm" onClick={createTicket} type="button">+ <GiTicket/>  New Ticket ! </button> */}
+                        <div className="col-12 tickets-top-nav ">
+                            <div className="col-12 d-flex justify-content-between">
+                                <nav aria-label="breadcrumb">
+                                    <ol className="breadcrumb">
+                                        <li className="breadcrumb-item"><Link href={"/tickets"}>Ticket</Link></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Home</li>
+                                    </ol>
+                                </nav>
+                                <button className="btn btn-primary btn-sm" type="button" onClick={handleAddTicket}>
+                                    + <GiTicket/> New Ticket !
+                                </button>
+                                {/* <button className="btn btn-primary btn-sm" onClick={createTicket} type="button">+ <GiTicket/>  New Ticket ! </button> */}
+                            </div>
+                            <hr/>
                         </div>
-                        <hr />
-                    </div>
 
 
-                    <div className="col-8">
-                        <UserInfo/>
-                    </div>
+                        <div className="col-8">
+                            <UserInfo/>
+                        </div>
 
-                    <div className="list-group col-4 mb-5">
-                        <h5>Connections: </h5>
-                        {currentUsers.map((user) => (
-                            <Link key={user._id} href={`/guest?username=${user.username}`} className="list-group-item list-group-item-action">
-                                <div className="d-flex w-100 justify-content-between">
-                                    <h6 className="mb-1">
-                                    {user.firstName} {user.lastName} 
+                        <div className="list-group col-4 mb-5">
+                            <h5>Connections: </h5>
+                            {currentUsers.map((user) => (
+                                <Link key={user._id} href={`/guest?username=${user.username}`}
+                                      className="list-group-item list-group-item-action">
+                                    <div className="d-flex w-100 justify-content-between">
+                                        <h6 className="mb-1">
+                                            {user.firstName} {user.lastName}
 
-                                    </h6>
-                                    <small className="text-body-secondary">{user.company}</small>
-                                </div>  
-                                <small className="text-body-secondary">{user.email}</small>
-                            </Link>
-                        ))}<br/>
+                                        </h6>
+                                        <small className="text-body-secondary">{user.company}</small>
+                                    </div>
+                                    <small className="text-body-secondary">{user.email}</small>
+                                </Link>
+                            ))}<br/>
 
-                        <nav aria-label="User page navigation">
-                            <ul className="pagination">
-                                {renderUserPagination()}
-                            </ul>
-                        </nav>
-                        <form className="row g-3" onSubmit={handleUserPageSubmit}>
+                            <nav aria-label="User page navigation">
+                                <ul className="pagination">
+                                    {renderUserPagination()}
+                                </ul>
+                            </nav>
+                            <form className="row g-3" onSubmit={handleUserPageSubmit}>
                                 <div className="col-auto">
                                     <h5>Go to Page:</h5>
                                 </div>
                                 <div className="col-auto">
-                                    <input className="form-control" type="number" value={inputUserPage} onChange={handleInputUserChange} />
+                                    <input className="form-control" type="number" value={inputUserPage}
+                                           onChange={handleInputUserChange}/>
                                 </div>
                                 <div className="col-auto">
-                                    <button className="btn btn-primary gap-1 buttom-align mb-3" type="submit">Go</button>
-                                </div>
-                        </form>
-                        {/* <NameList/> */}
-                    </div><br/>
-
-                    <div className="list-group col-12"><br/>
-                        <h5>Tickets: </h5>
-
-                        <nav aria-label="Page navigation example">
-                            <ul className="pagination">
-                            {renderPagination()}
-                            </ul>
-                            <form className="row g-3" onSubmit={handlePageSubmit}>
-                                <div className="col-auto">
-                                    <h5>Go to Page:</h5>
-                                </div>
-                                <div className="col-auto">
-                                    <input className="form-control" type="number" value={inputPage} onChange={handleInputChange} />
-                                </div>
-                                <div className="col-auto">
-                                    <button className="btn btn-primary gap-1 buttom-align mb-3" type="submit">Go</button>
+                                    <button className="btn btn-primary gap-1 buttom-align mb-3" type="submit">Go
+                                    </button>
                                 </div>
                             </form>
-                        </nav>
+                            {/* <NameList/> */}
+                        </div>
+                        <br/>
 
-                        {currentTickets.map((ticket, index) => (
-                          <Link key={index} href={`/tickets/ticketDetail?_id=${ticket._id}`} className="list-group-item list-group-item-action">
-                              <div className="d-flex w-100 justify-content-between">
-                                  <h6 className="mb-1">
-                                  Location: {ticket.name || ticket.MonitoringLocationDescriptionText}
-                                  </h6>
-                                  <small className="text-body-secondary">
-                                      {ticket._id} <br/>
-                                      <button 
-                                          className="btn btn-danger me-2 float-end buttom-align" 
-                                          onClick={(e) => {
-                                              e.preventDefault(); 
-                                              e.stopPropagation(); 
-                                              deleteTicket(ticket);
-                                          }}>
-                                          <BsTrash3Fill />
-                                      </button>
-                                      <button 
-                                          className={`btn float-end me-2 buttom-align ${ticket.status === 'complete' ? 'btn-success' : 'btn-warning'}`}>
-                                          {ticket.status === 'complete' ? 'Complete' : 'Loading'}
-                                      </button>
-                                  </small>
-                              </div>  
-                              <small className="text-body-secondary">{ticket.EstimatedDate}</small>
-                          </Link>
-                      ))}
-                      <br/>
-                        {/* <TicketList/> */}
+                        <div className="list-group col-12"><br/>
+                            <h5>Tickets: </h5>
+
+                            <nav aria-label="Page navigation example">
+                                <ul className="pagination">
+                                    {renderPagination()}
+                                </ul>
+                                <form className="row g-3" onSubmit={handlePageSubmit}>
+                                    <div className="col-auto">
+                                        <h5>Go to Page:</h5>
+                                    </div>
+                                    <div className="col-auto">
+                                        <input className="form-control" type="number" value={inputPage}
+                                               onChange={handleInputChange}/>
+                                    </div>
+                                    <div className="col-auto">
+                                        <button className="btn btn-primary gap-1 buttom-align mb-3" type="submit">Go
+                                        </button>
+                                    </div>
+                                </form>
+                            </nav>
+
+                            <div className="list-group col-12">
+                                <br/>
+                                <h5>Tickets: </h5>
+
+                                {loading && (
+                                    <Spinner animation="border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>
+                                )}
+
+                                {!loading && (
+                                    <>
+                                        {currentTickets.map((ticket, index) => (
+                                            <Link key={index} href={`/tickets/ticketDetail?_id=${ticket._id}`}
+                                                  className="list-group-item list-group-item-action">
+                                                <div className="d-flex w-100 justify-content-between">
+                                                    <h6 className="mb-1">
+                                                        Location: {ticket.name || ticket.MonitoringLocationDescriptionText}
+                                                    </h6>
+                                                    <small className="text-body-secondary">
+                                                        {ticket._id} <br/>
+                                                        <button
+                                                            className="btn btn-danger me-2 float-end buttom-align"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                                deleteTicket(ticket);
+                                                            }}>
+                                                            <BsTrash3Fill/>
+                                                        </button>
+                                                        <button
+                                                            className={`btn float-end me-2 buttom-align ${ticket.status === 'complete' ? 'btn-success' : 'btn-warning'}`}>
+                                                            {ticket.status === 'complete' ? 'Complete' : 'Loading'}
+                                                        </button>
+                                                    </small>
+                                                </div>
+                                                <small className="text-body-secondary">{ticket.EstimatedDate}</small>
+                                            </Link>
+                                        ))}
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
                     </div>
-
-                </div>
-            </div>)}
+                </div>)}
             {!user && (
-                <Container className={"m-10"} style={{ height: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Container className={"m-10"}
+                           style={{height: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                     <Alert variant="danger" className="text-center">
                         <Alert.Heading>Access Denied</Alert.Heading>
                         <p>You must be logged in to access this page.</p>

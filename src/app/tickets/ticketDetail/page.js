@@ -24,7 +24,7 @@ export default function Tickets() {
         Value: null,
         Unit: "",
         status: "loading",
-        COD: null,
+        COD_Value: null,
         DO_Value: null,
         NH4N_Value: null,
         pH_Value:null
@@ -122,7 +122,6 @@ export default function Tickets() {
                             <div className="card">
                                 <div className="card-body">
                                     <h4>Monitoring Site Information:</h4>
-
                                     <div className="mb-3">
                                         <div className="form-floating">
                                             <select value={ticket.MonitoringLocationIdentifier} 
@@ -151,7 +150,7 @@ export default function Tickets() {
                                     <h4>Indicators</h4>
                                     <div className="mb-3">
                                         <label htmlFor="cod" className="form-label">COD Value:</label>
-                                        <input type="number" className="form-control" id="COD" value={ticket.COD} onChange={handleInputChange}></input>
+                                        <input type="number" className="form-control" id="COD_Value" value={ticket.COD_Value} onChange={handleInputChange}></input>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="do" className="form-label">DO Value:</label>
@@ -165,24 +164,21 @@ export default function Tickets() {
                                         <label htmlFor="ph" className="form-label">pH Value:</label>
                                         <input type="number" className="form-control" id="pH_Value" value={ticket.pH_Value} onChange={handleInputChange}></input>
                                     </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="indicatorName" className="form-label">Indicator Name:</label>
-                                        <input type="email" className="form-control" id="indicatorName" value={ticket.IndicatorsName} onChange={handleInputChange}></input>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="indicatorValue" className="form-label">Indicator Value:</label>
-                                        <input type="number" className="form-control" id="indicatorValue" value={ticket.value} onChange={handleInputChange}></input>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="indicatorUnit" className="form-label">Indicator Unit:</label>
-                                        <input type="email" className="form-control" id="indicatorUnit" value={ticket.Unit} onChange={handleInputChange}></input>
-                                    </div>
 
                                     <div className="mb-3">
                                         <div className="form-check">
                                             <input type="checkbox" className="form-check-input" id="statusCheckbox" onChange={handleStatusChange} checked={ticket.status === 'complete'} />
                                             <label className="form-check-label" htmlFor="statusCheckbox">Status is: {ticket.status}</label>
                                         </div>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <h3>reporter:</h3>
+                                        {ticket?.reporter?.map((reporter, index) => (
+                                            <Link className={"m-1"} href={"/friends?username=" + reporter} key={index}>
+                                                {reporter}
+                                            </Link>
+                                        ))}
                                     </div>
                                 </div>
                                 <div className="d-grid gap-2 d-md-block">                                    

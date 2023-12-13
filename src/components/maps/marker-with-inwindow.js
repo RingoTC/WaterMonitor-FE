@@ -59,10 +59,8 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                 data: { MonitoringLocationIdentifier: monitorID },
             });
 
-            // 重新获取最新的站点数据
             dispatch(updateFetchMaps());
 
-            // 关闭当前弹窗
             setInfowindowOpen(false);
 
             console.log('Site deleted successfully:', response.data);
@@ -98,6 +96,7 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                     }}>
                     <div className="text-start" style={{"width":"300px"}}>
                         <p>{Description}</p>
+                        {JSON.stringify(current)}
                         {current ? (
                             <Table striped bordered hover style={{ lineHeight: '16px', fontSize: '14px' }}>
                                 <tbody>
@@ -117,7 +116,6 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                                     <td><strong>COD:</strong></td>
                                     <td>{current.COD_Value}</td>
                                 </tr>
-                                {/* ... (other properties) */}
                                 </tbody>
                             </Table>
                         ) : (
@@ -136,6 +134,7 @@ const MarkerWithInfowindow = ({initialPosition, Description, monitorID}) => {
                         )}
                         <div className="action">
                             <Button variant="primary"><Link href={`/tickets`} style={{"color":"#fff","textDecoration":"none"}}>Submit a Ticket</Link></Button>
+                            {user && <Button variant="success"><Link href={`/tickets/ticketDetail?_id=${current._id}`} style={{"color":"#fff","textDecoration":"none"}}>Edit</Link></Button>}
                             {user && user.role === 'ADMIN' && <Button variant="danger" onClick={handleDelete}>Delete</Button>}
                         </div>
                     </div>
