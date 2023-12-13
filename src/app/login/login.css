@@ -3,6 +3,7 @@
 }
 .login-container-fluid .col-md-6 {
     padding: 0;
+    overflow: hidden;
 }
 .left-half {
     
