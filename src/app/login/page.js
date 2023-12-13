@@ -37,7 +37,7 @@ const ReduxLogin = () => {
     }, [user]);
  
     return (
-        <div className="home p-0">
+        <div className="p-0">
                     {user ? (
                         <div>
 
