@@ -193,7 +193,7 @@ export default function Details() {
                     <Row>
                         <Col xs={4}>
                             <h3>Section Data</h3>
-                            <Table striped bordered hover responsive>
+                            <Table style={{"overflow":"hidden"}} striped bordered hover responsive>
                                 <thead>
                                 <tr>
                                     <th>Section Name</th>
