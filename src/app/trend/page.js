@@ -156,7 +156,7 @@ export default function Details() {
                     CNEMC (hereinafter referred to as "Terminal") is a public institution directly under the Ministry of Ecology and Environment, approved by the state at the end of 1979, and formally organized in 1980. Its main functions are to undertake national ecological environment monitoring tasks, lead the development of ecological environment monitoring technology, and provide monitoring information and technical support for the national ecological environment management and decision-making, Its main functions are to undertake national ecological environment monitoring tasks, lead the development of ecological environment monitoring technology, provide monitoring information, reports and technical support for national ecological environment management and decision-making, and provide technical guidance for national ecological environment monitoring.
                 </p>
             </Alert>
-            {user && (
+            {(
                 <div>
                     <Row>
                         <Col style={{ float: 'left', marginRight: '10px' }}>
@@ -241,15 +241,6 @@ export default function Details() {
                         </Col>
                     </Row>
                 </div>
-            )}
-            {!user && (
-                <Container style={{ height: '80vh' }}>
-                    <Alert variant="danger" className="text-center">
-                        <Alert.Heading>Access Denied</Alert.Heading>
-                        <p>You must be logged in to access this page.</p>
-                        Link to <Link href="/reduxlogin">Login</Link>
-                    </Alert>
-                </Container>
             )}
         </div>
     );

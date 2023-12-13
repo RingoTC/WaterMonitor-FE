@@ -44,11 +44,11 @@ const ReduxLogin = () => {
                         </div>
                     ) : (
                         <div className="container-fluid login-container-fluid">
-                            <div className="row">
+                            <div className="row" style={{"marginRight":"0px"}}>
                                 <div className="col-md-6 ">
                                     <img src="images/login.png" className="left-half" alt="..."/>
                                 </div>
-                                <div className="col-md-6 login-container">
+                                <div className="col-md-5 login-container">
                                     <h2 className="login-title">Let&apos;s Log In!</h2>
                                     <form onSubmit={handleSubmit}>
                                         <div className="mb-3">

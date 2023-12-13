@@ -3,12 +3,14 @@
 import UserInfo from "@/components/ticket_user_info";
 import "./tickets.css"
 import { GiTicket } from 'react-icons/gi';
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import * as client from "./client";
 import { useRouter } from 'next/navigation';
 import { BsTrash3Fill} from "react-icons/bs";
 import {useSelector} from "react-redux";
+import {Container} from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
  
 export default function Tickets() {
     const router = useRouter();
@@ -218,7 +220,7 @@ export default function Tickets() {
 
   useEffect(() => {
     if (!user) {
-        router.push('/login');
+        //router.push('/login');
     } else {
         loadTickets();
         loadUsers();
@@ -338,6 +340,16 @@ export default function Tickets() {
 
                 </div>
             </div>)}
+            {!user && (
+                <Container className={"m-10"} style={{ height: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Alert variant="danger" className="text-center">
+                        <Alert.Heading>Access Denied</Alert.Heading>
+                        <p>You must be logged in to access this page.</p>
+                        Link to <Link href={"/login"}>Login</Link>
+                    </Alert>
+                </Container>
+
+            )}
         </div>
     );
 

@@ -24,7 +24,7 @@ body{
 .home{
     position: relative;
     padding: 0;
-    height: calc(100vh - 40px);
+    height: calc(100vh - 60px);
 }
 .home .search{
     position: absolute;
