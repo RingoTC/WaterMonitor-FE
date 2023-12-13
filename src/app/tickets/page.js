@@ -235,7 +235,7 @@ export default function Tickets() {
 }, [user, router]);
 
     return (
-        <div className="p-0">
+        <div className="p-3">
             {user && (
                 <div className="container">
                     <div className="row">
