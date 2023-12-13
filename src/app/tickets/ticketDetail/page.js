@@ -17,14 +17,10 @@ export default function Tickets() {
         MonitoringLocationIdentifier:"" , 
         LongitudeMeasure:"" , 
         LatitudeMeasure:"", 
-        MonitoringYear:"" , 
-        MonitoringWeek: "", 
         MonitoringLocationDescriptionText: "",
-        IndicatorsName:"",
-        Value: null,
-        Unit: "",
+        name:"",
         status: "loading",
-        COD: null,
+        COD_Value: null,
         DO_Value: null,
         NH4N_Value: null,
         pH_Value:null
@@ -40,10 +36,22 @@ export default function Tickets() {
         }
     };
 
+    // const handleInputChange = (e) => {
+    //     const { id, value } = e.target;
+    //     setTicket({ ...ticket, [id]: value });
+    // };
+
     const handleInputChange = (e) => {
         const { id, value } = e.target;
-        setTicket({ ...ticket, [id]: value });
+        let key = id;
+    
+        if (id === "COD") {
+            key = "COD_Value";
+        }
+    
+        setTicket({ ...ticket, [key]: value });
     };
+
     const [site, setSite] = useState({
         MonitoringLocationIdentifier:null,
         LongitudeMeasure:null,
@@ -62,19 +70,35 @@ export default function Tickets() {
     const handleStatusChange = (e) => {
         setTicket({ ...ticket, status: e.target.checked ? "complete" : "loading" });
     };
+    // const handleChange = (e) => {
+    //     const selectedSiteIdentifier =  Number(e.target.value);
+    //     setTicket({ ...ticket, MonitoringLocationIdentifier: selectedSiteIdentifier });
+    //     const selectedSite = sites.find(site => site.MonitoringLocationIdentifier === selectedSiteIdentifier);
+    //     if (selectedSite) {
+    //         setSite(selectedSite);
+    //         setTicket({ 
+    //             ...ticket, 
+    //             MonitoringLocationDescriptionText:selectedSite.MonitoringLocationDescriptionText,
+    //             MonitoringLocationIdentifier: selectedSite.MonitoringLocationIdentifier,
+    //             LongitudeMeasure: selectedSite.LongitudeMeasure,
+    //             LatitudeMeasure: selectedSite.LatitudeMeasure,
+    //         });
+    //     }
+    // };
+
     const handleChange = (e) => {
-        const selectedSiteIdentifier =  Number(e.target.value);
+        const selectedSiteIdentifier = Number(e.target.value);
         setTicket({ ...ticket, MonitoringLocationIdentifier: selectedSiteIdentifier });
         const selectedSite = sites.find(site => site.MonitoringLocationIdentifier === selectedSiteIdentifier);
         if (selectedSite) {
-            setSite(selectedSite);
-            setTicket({ 
-                ...ticket, 
-                MonitoringLocationDescriptionText:selectedSite.MonitoringLocationDescriptionText,
-                MonitoringLocationIdentifier: selectedSite.MonitoringLocationIdentifier,
+            setTicket(prevTicket => ({
+                ...prevTicket,
+                MonitoringLocationIdentifier: selectedSiteIdentifier,
+                MonitoringLocationDescriptionText: selectedSite.MonitoringLocationDescriptionText,
+                name:  selectedSite.MonitoringLocationDescriptionText,
                 LongitudeMeasure: selectedSite.LongitudeMeasure,
                 LatitudeMeasure: selectedSite.LatitudeMeasure,
-            });
+            }));
         }
     };
 
@@ -150,8 +174,8 @@ export default function Tickets() {
 
                                     <h4>Indicators</h4>
                                     <div className="mb-3">
-                                        <label htmlFor="cod" className="form-label">COD Value:</label>
-                                        <input type="number" className="form-control" id="COD" value={ticket.COD} onChange={handleInputChange}></input>
+                                        <label htmlFor="COD" className="form-label">COD Value:</label>
+                                        <input type="number" className="form-control" id="COD" value={ticket.COD_Value} onChange={handleInputChange}></input>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="do" className="form-label">DO Value:</label>
@@ -165,18 +189,18 @@ export default function Tickets() {
                                         <label htmlFor="ph" className="form-label">pH Value:</label>
                                         <input type="number" className="form-control" id="pH_Value" value={ticket.pH_Value} onChange={handleInputChange}></input>
                                     </div>
-                                    <div className="mb-3">
+                                    {/* <div className="mb-3">
                                         <label htmlFor="indicatorName" className="form-label">Indicator Name:</label>
                                         <input type="email" className="form-control" id="indicatorName" value={ticket.IndicatorsName} onChange={handleInputChange}></input>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="indicatorValue" className="form-label">Indicator Value:</label>
-                                        <input type="number" className="form-control" id="indicatorValue" value={ticket.value} onChange={handleInputChange}></input>
+                                        <input type="number" className="form-control" id="indicatorValue" value={ticket.Value} onChange={handleInputChange}></input>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="indicatorUnit" className="form-label">Indicator Unit:</label>
                                         <input type="email" className="form-control" id="indicatorUnit" value={ticket.Unit} onChange={handleInputChange}></input>
-                                    </div>
+                                    </div> */}
 
                                     <div className="mb-3">
                                         <div className="form-check">

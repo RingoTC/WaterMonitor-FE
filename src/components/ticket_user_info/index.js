@@ -32,10 +32,6 @@ export default function UserInfo() {
         setIsEditable(true); 
     };
 
-    // const handleSave = () => {
-    //     setIsEditable(false);
-    // };
-
     const handleChange = (e) => {
         setReminder(e.target.value); 
     };
@@ -97,15 +93,23 @@ export default function UserInfo() {
             });
     };
 
+    // useEffect(() => {
+    //     fetchTotalTicketCount();
+    //     fetchTotalCompleteCount();
+    //     fetchTotalLoadingCount();
+    //     getuserLocation();
+    //     setReminder(user.reminder);
+    // }, [user.reminder]);
+
     useEffect(() => {
         fetchTotalTicketCount();
         fetchTotalCompleteCount();
         fetchTotalLoadingCount();
         getuserLocation();
-        setReminder(user.reminder);
-    }, [user.reminder]);
-
-    console.log("Updating reminder for user:", user.username, "New reminder:", reminder);
+        if (user && user.reminder !== reminder) {
+            setReminder(user.reminder);
+        }
+    }, [user]); 
 
   
     return (
