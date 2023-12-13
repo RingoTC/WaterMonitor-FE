@@ -34,11 +34,6 @@ export const findSite = async (id) => {
     return response.data;
 };
 
-
-// export const updateTicket = async (id, updateData) => {
-//     const response = await axios.put(`${TICKETS_API}/updateticket/${id}`, updateData);
-//     return response.data;
-// };
 export const updateTicket = async (id, updateData) => {
     try {
         const response = await axios.put(`${TICKETS_API}/updateticket/${id}`, updateData);
@@ -48,6 +43,7 @@ export const updateTicket = async (id, updateData) => {
         throw error; 
     }
 };
+
 
 export const getTicketById = async (id) => {
     try {

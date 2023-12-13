@@ -44,7 +44,7 @@ const ReduxLogin = () => {
                     ) : (
                         <div className="container-fluid login-container-fluid">
                             <div className="row">
-                                <div className="col-md-6 ">
+                                <div className="col-md-6 .d-none .d-md-block .d-lg-block .d-xl-block">
                                     <img src="images/login.png" className="left-half" alt="..."/>
                                 </div>
                                 <div className="col-md-6 login-container">

@@ -229,7 +229,7 @@ export default function Tickets() {
         <div className="home p-0">
           {user && (
             <div className="container">
-                <div className="row">
+                <div className="row ">
 
                     <div className="col-12 tickets-top-nav ">
                         <div className="col-12 d-flex justify-content-between">
@@ -248,7 +248,7 @@ export default function Tickets() {
                     </div>
 
 
-                    <div className="col-8">
+                    <div className="col-8 ">
                         <UserInfo/>
                     </div>
 

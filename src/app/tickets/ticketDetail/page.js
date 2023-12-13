@@ -128,7 +128,7 @@ export default function Tickets() {
                                             <select value={ticket.MonitoringLocationIdentifier} 
                                                     onChange={handleChange} 
                                                     className="form-select" id="floatingSelect" 
-                                                    aria-label="Floating label select example"
+                                                    aria-label="Floating label select example" required
                                             >
                                                 <option value="">Select Site</option>
                                                 {sites.map((site, index) => (
