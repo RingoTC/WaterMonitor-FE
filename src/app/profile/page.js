@@ -56,8 +56,7 @@ export default function Profile() {
                                     <p>abc</p>
                                 </div>
 
-                                <div className="col-10 col-sm-12 col-lg-8 bg-light mb-5">
-
+                                <div className="col-12 col-lg-8 bg-light mb-5">
 
                                     <h3 className="mt-3">SKILLS</h3>
 
